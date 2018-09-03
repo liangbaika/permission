@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="permission:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="permission.war">
-      <element id="artifact" artifact-name="permission:war exploded" />
-    </root>
-  </artifact>
-</component>
