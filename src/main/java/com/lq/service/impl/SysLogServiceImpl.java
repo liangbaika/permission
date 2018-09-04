@@ -1,5 +1,7 @@
 package com.lq.service.impl;
 
+import com.lq.entity.SysLogWithBLOBs;
+import com.lq.mapping.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +26,13 @@ public class SysLogServiceImpl implements SysLogService {
 	@Transactional
 	@Override
 	public int create(SysLogModel sysLogModel) {
-		return sysLogRepo.insert(beanMapper.map(sysLogModel, SysLog.class));
+		return sysLogRepo.insert(beanMapper.map(sysLogModel, SysLogWithBLOBs.class));
 	}
 
 	@Transactional
 	@Override
 	public int createSelective(SysLogModel sysLogModel) {
-		return sysLogRepo.insertSelective(beanMapper.map(sysLogModel, SysLog.class));
+		return sysLogRepo.insertSelective(beanMapper.map( sysLogModel, SysLogWithBLOBs.class));
 	}
 
 	@Transactional
@@ -64,11 +66,11 @@ public class SysLogServiceImpl implements SysLogService {
 	public int updateByPrimaryKey(SysLogModel sysLogModel) {
 		return sysLogRepo.updateByPrimaryKey(beanMapper.map(sysLogModel, SysLog.class));
 	}
-	
+
 	@Transactional
 	@Override
 	public int updateByPrimaryKeySelective(SysLogModel sysLogModel) {
-		return sysLogRepo.updateByPrimaryKeySelective(beanMapper.map(sysLogModel, SysLog.class));
+		return sysLogRepo.updateByPrimaryKeySelective(beanMapper.map(sysLogModel, SysLogWithBLOBs.class));
 	}
 
 }

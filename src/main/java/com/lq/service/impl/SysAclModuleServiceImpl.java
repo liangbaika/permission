@@ -1,5 +1,6 @@
 package com.lq.service.impl;
 
+import com.lq.mapping.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,7 +65,7 @@ public class SysAclModuleServiceImpl implements SysAclModuleService {
 	public int updateByPrimaryKey(SysAclModuleModel sysAclModuleModel) {
 		return sysAclModuleRepo.updateByPrimaryKey(beanMapper.map(sysAclModuleModel, SysAclModule.class));
 	}
-	
+
 	@Transactional
 	@Override
 	public int updateByPrimaryKeySelective(SysAclModuleModel sysAclModuleModel) {

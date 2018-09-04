@@ -1,9 +1,9 @@
 package com.lq.controller;
 
+import com.lq.mapping.BeanMapper;
+import com.lq.vo.ResponseEnvelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import com.wlw.pylon.core.beans.mapping.BeanMapper;
-import com.wlw.pylon.web.rest.ResponseEnvelope;
-import com.wlw.pylon.web.rest.annotation.RestApiController;
 
 import com.lq.service.SysRoleService;
 import com.lq.model.SysRoleModel;
@@ -42,40 +39,40 @@ public class SysRoleRestApiController {
 	}
 
 	@GetMapping(value = "/lq/sysRole")
-    public ResponseEnvelope<Page<SysRoleModel>> listSysRole(SysRoleVO sysRoleVO,Pageable pageable){
+	public ResponseEnvelope<Page<SysRoleModel>> listSysRole(SysRoleVO sysRoleVO,Pageable pageable){
 
 		SysRoleModel param = beanMapper.map(sysRoleVO, SysRoleModel.class);
-        List<SysRoleModel> sysRoleModelModels = sysRoleService.selectPage(param,pageable);
-        long count=sysRoleService.selectCount(param);
-        Page<SysRoleModel> page = new PageImpl<>(sysRoleModelModels,pageable,count);
-        ResponseEnvelope<Page<SysRoleModel>> responseEnv = new ResponseEnvelope<>(page,true);
-        return responseEnv;
-    }
+		List<SysRoleModel> sysRoleModelModels = sysRoleService.selectPage(param,pageable);
+		long count=sysRoleService.selectCount(param);
+		Page<SysRoleModel> page = new PageImpl<>(sysRoleModelModels,pageable,count);
+		ResponseEnvelope<Page<SysRoleModel>> responseEnv = new ResponseEnvelope<>(page,true);
+		return responseEnv;
+	}
 
 	@PostMapping(value = "/lq/sysRole")
 	public ResponseEnvelope<Integer> createSysRole(@RequestBody SysRoleVO sysRoleVO){
 		SysRoleModel sysRoleModel = beanMapper.map(sysRoleVO, SysRoleModel.class);
 		Integer  result = sysRoleService.create(sysRoleModel);
 		ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<>(result,true);
-        return responseEnv;
+		return responseEnv;
 	}
 
-    @DeleteMapping(value = "/lq/sysRole/{id}")
+	@DeleteMapping(value = "/lq/sysRole/{id}")
 	public ResponseEnvelope<Integer> deleteSysRoleByPrimaryKey(@PathVariable Integer id){
 		Integer  result = sysRoleService.deleteByPrimaryKey(id);
 		ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<>(result,true);
-        return responseEnv;
+		return responseEnv;
 	}
 
 
-    @PutMapping(value = "/lq/sysRole/{id}")
+	@PutMapping(value = "/lq/sysRole/{id}")
 	public ResponseEnvelope<Integer> updateSysRoleByPrimaryKeySelective(@PathVariable Integer id,
-					@RequestBody SysRoleVO sysRoleVO){
+																		@RequestBody SysRoleVO sysRoleVO){
 		SysRoleModel sysRoleModel = beanMapper.map(sysRoleVO, SysRoleModel.class);
 		sysRoleModel.setId(id);
 		Integer  result = sysRoleService.updateByPrimaryKeySelective(sysRoleModel);
 		ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<Integer>(result,true);
-        return responseEnv;
+		return responseEnv;
 	}
 
 }

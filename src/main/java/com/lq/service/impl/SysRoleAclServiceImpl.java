@@ -1,5 +1,6 @@
 package com.lq.service.impl;
 
+import com.lq.mapping.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +10,6 @@ import com.lq.entity.SysRoleAcl;
 import com.lq.repository.SysRoleAclRepository;
 import com.lq.model.SysRoleAclModel;
 import com.lq.service.SysRoleAclService;
-import com.wlw.pylon.core.beans.mapping.BeanMapper;
 
 import java.util.List;
 

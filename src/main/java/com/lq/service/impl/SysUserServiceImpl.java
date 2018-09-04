@@ -1,5 +1,6 @@
 package com.lq.service.impl;
 
+import com.lq.mapping.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

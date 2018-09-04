@@ -1,8 +1,9 @@
 package com.lq.model;
 
-import com.wlw.pylon.core.beans.mapping.annotation.MapClass;
+import com.lq.mapping.annotation.MapClass;
 import java.util.Date;
 
+@MapClass("com.lq.entity.SysAcl")
 public class SysAclModel{
 	
 	private Integer id;
