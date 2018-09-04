@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lq.repository.SysLogRepository">
+  <resultMap id="BaseResultMap" type="com.lq.entity.SysLog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="target_id" jdbcType="INTEGER" property="targetId" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime" />
+    <result column="operate_ip" jdbcType="VARCHAR" property="operateIp" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.lq.entity.SysLogWithBLOBs">
+    <result column="old_value" jdbcType="LONGVARCHAR" property="oldValue" />
+    <result column="new_value" jdbcType="LONGVARCHAR" property="newValue" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, type, target_id, operator, operate_time, operate_ip, status
+  </sql>
+  <sql id="Blob_Column_List">
+    old_value, new_value
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sys_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lq.entity.SysLogWithBLOBs">
+    insert into sys_log (id, type, target_id, 
+      operator, operate_time, operate_ip, 
+      status, old_value, new_value
+      )
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{targetId,jdbcType=INTEGER}, 
+      #{operator,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{oldValue,jdbcType=LONGVARCHAR}, #{newValue,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lq.entity.SysLogWithBLOBs">
+    insert into sys_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="targetId != null">
+        target_id,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="operateTime != null">
+        operate_time,
+      </if>
+      <if test="operateIp != null">
+        operate_ip,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="oldValue != null">
+        old_value,
+      </if>
+      <if test="newValue != null">
+        new_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="targetId != null">
+        #{targetId,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null">
+        #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateIp != null">
+        #{operateIp,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="oldValue != null">
+        #{oldValue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="newValue != null">
+        #{newValue,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lq.entity.SysLogWithBLOBs">
+    update sys_log
+    <set>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="targetId != null">
+        target_id = #{targetId,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null">
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateIp != null">
+        operate_ip = #{operateIp,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="oldValue != null">
+        old_value = #{oldValue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="newValue != null">
+        new_value = #{newValue,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.lq.entity.SysLogWithBLOBs">
+    update sys_log
+    set type = #{type,jdbcType=INTEGER},
+      target_id = #{targetId,jdbcType=INTEGER},
+      operator = #{operator,jdbcType=VARCHAR},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      operate_ip = #{operateIp,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      old_value = #{oldValue,jdbcType=LONGVARCHAR},
+      new_value = #{newValue,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lq.entity.SysLog">
+    update sys_log
+    set type = #{type,jdbcType=INTEGER},
+      target_id = #{targetId,jdbcType=INTEGER},
+      operator = #{operator,jdbcType=VARCHAR},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      operate_ip = #{operateIp,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectCount" parameterType="com.lq.entity.SysLog" resultType="java.lang.Integer">
+    select count(*) from sys_log
+    <where>
+      <if test="id != null">
+        and id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="type != null">
+        and type = #{type,jdbcType=INTEGER}
+      </if>
+      <if test="targetId != null">
+        and target_id = #{targetId,jdbcType=INTEGER}
+      </if>
+      <if test="operator != null">
+        and operator = #{operator,jdbcType=VARCHAR}
+      </if>
+      <if test="operateTime != null">
+        and operate_time = #{operateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="operateIp != null">
+        and operate_ip = #{operateIp,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+        and status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="oldValue != null">
+        and old_value = #{oldValue,jdbcType=LONGVARCHAR}
+      </if>
+      <if test="newValue != null">
+        and new_value = #{newValue,jdbcType=LONGVARCHAR}
+      </if>
+    </where>
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_log where 1 = 1 
+    <if test="param1.id != null">
+      and id = #{param1.id,jdbcType=INTEGER}
+    </if>
+    <if test="param1.type != null">
+      and type = #{param1.type,jdbcType=INTEGER}
+    </if>
+    <if test="param1.targetId != null">
+      and target_id = #{param1.targetId,jdbcType=INTEGER}
+    </if>
+    <if test="param1.operator != null">
+      and operator = #{param1.operator,jdbcType=VARCHAR}
+    </if>
+    <if test="param1.operateTime != null">
+      and operate_time = #{param1.operateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="param1.operateIp != null">
+      and operate_ip = #{param1.operateIp,jdbcType=VARCHAR}
+    </if>
+    <if test="param1.status != null">
+      and status = #{param1.status,jdbcType=INTEGER}
+    </if>
+    <if test="param1.oldValue != null">
+      and old_value = #{param1.oldValue,jdbcType=LONGVARCHAR}
+    </if>
+    <if test="param1.newValue != null">
+      and new_value = #{param1.newValue,jdbcType=LONGVARCHAR}
+    </if>
+    <if test="param2.sort != null">
+      order by 
+      <foreach collection="param2.sort" item="order" separator=",">
+        ${order.property} ${order.direction}
+      </foreach>
+    </if>
+    <if test="param2.offset >= 0 and param2.pageSize > 0">
+      limit ${param2.offset}, ${param2.pageSize}
+    </if>
+  </select>
+</mapper>

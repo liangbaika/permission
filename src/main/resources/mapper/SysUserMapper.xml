@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lq.repository.SysUserRepository">
+  <resultMap id="BaseResultMap" type="com.lq.entity.SysUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="mail" jdbcType="VARCHAR" property="mail" />
+    <result column="dept_id" jdbcType="INTEGER" property="deptId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="operater" jdbcType="VARCHAR" property="operater" />
+    <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime" />
+    <result column="operate_ip" jdbcType="VARCHAR" property="operateIp" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, password, telephone, mail, dept_id, status, remark, operater, operate_time, 
+    operate_ip
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lq.entity.SysUser">
+    insert into sys_user (id, username, password, 
+      telephone, mail, dept_id, 
+      status, remark, operater, 
+      operate_time, operate_ip)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, #{deptId,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{operater,jdbcType=VARCHAR}, 
+      #{operateTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lq.entity.SysUser">
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="mail != null">
+        mail,
+      </if>
+      <if test="deptId != null">
+        dept_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="operater != null">
+        operater,
+      </if>
+      <if test="operateTime != null">
+        operate_time,
+      </if>
+      <if test="operateIp != null">
+        operate_ip,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="mail != null">
+        #{mail,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operater != null">
+        #{operater,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null">
+        #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateIp != null">
+        #{operateIp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lq.entity.SysUser">
+    update sys_user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="mail != null">
+        mail = #{mail,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        dept_id = #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operater != null">
+        operater = #{operater,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null">
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateIp != null">
+        operate_ip = #{operateIp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lq.entity.SysUser">
+    update sys_user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      mail = #{mail,jdbcType=VARCHAR},
+      dept_id = #{deptId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      operater = #{operater,jdbcType=VARCHAR},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      operate_ip = #{operateIp,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectCount" parameterType="com.lq.entity.SysUser" resultType="java.lang.Integer">
+    select count(*) from sys_user
+    <where>
+      <if test="id != null">
+        and id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="username != null">
+        and username = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="password != null">
+        and password = #{password,jdbcType=VARCHAR}
+      </if>
+      <if test="telephone != null">
+        and telephone = #{telephone,jdbcType=VARCHAR}
+      </if>
+      <if test="mail != null">
+        and mail = #{mail,jdbcType=VARCHAR}
+      </if>
+      <if test="deptId != null">
+        and dept_id = #{deptId,jdbcType=INTEGER}
+      </if>
+      <if test="status != null">
+        and status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="remark != null">
+        and remark = #{remark,jdbcType=VARCHAR}
+      </if>
+      <if test="operater != null">
+        and operater = #{operater,jdbcType=VARCHAR}
+      </if>
+      <if test="operateTime != null">
+        and operate_time = #{operateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="operateIp != null">
+        and operate_ip = #{operateIp,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <select id="selectPage" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user where 1 = 1 
+    <if test="param1.id != null">
+      and id = #{param1.id,jdbcType=INTEGER}
+    </if>
+    <if test="param1.username != null">
+      and username = #{param1.username,jdbcType=VARCHAR}
+    </if>
+    <if test="param1.password != null">
+      and password = #{param1.password,jdbcType=VARCHAR}
+    </if>
+    <if test="param1.telephone != null">
+      and telephone = #{param1.telephone,jdbcType=VARCHAR}
+    </if>
+    <if test="param1.mail != null">
+      and mail = #{param1.mail,jdbcType=VARCHAR}
+    </if>
+    <if test="param1.deptId != null">
+      and dept_id = #{param1.deptId,jdbcType=INTEGER}
+    </if>
+    <if test="param1.status != null">
+      and status = #{param1.status,jdbcType=INTEGER}
+    </if>
+    <if test="param1.remark != null">
+      and remark = #{param1.remark,jdbcType=VARCHAR}
+    </if>
+    <if test="param1.operater != null">
+      and operater = #{param1.operater,jdbcType=VARCHAR}
+    </if>
+    <if test="param1.operateTime != null">
+      and operate_time = #{param1.operateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="param1.operateIp != null">
+      and operate_ip = #{param1.operateIp,jdbcType=VARCHAR}
+    </if>
+    <if test="param2.sort != null">
+      order by 
+      <foreach collection="param2.sort" item="order" separator=",">
+        ${order.property} ${order.direction}
+      </foreach>
+    </if>
+    <if test="param2.offset >= 0 and param2.pageSize > 0">
+      limit ${param2.offset}, ${param2.pageSize}
+    </if>
+  </select>
+</mapper>
