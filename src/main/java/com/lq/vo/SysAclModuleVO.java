@@ -1,6 +1,6 @@
 package com.lq.vo;
 
-import com.wlw.pylon.core.beans.mapping.annotation.MapClass;
+
 import java.util.Date;
 
 

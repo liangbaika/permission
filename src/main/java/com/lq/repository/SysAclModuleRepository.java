@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public interface SysAclModuleRepository {
     int deleteByPrimaryKey(@Param("id") Integer id);
 

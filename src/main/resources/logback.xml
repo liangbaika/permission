@@ -170,17 +170,10 @@
 
     <!--&lt;!&ndash; 为单独的包配置日志级别，若root的级别大于此级别， 此处级别也会输出 应用场景：生产环境一般不会将日志级别设置为trace或debug，但是为详细的记录SQL语句的情况，-->
     <!--可将hibernate的级别设置为debug，如此一来，日志文件中就会出现hibernate的debug级别日志， 而其它包则会按root的级别输出日志 &ndash;&gt;-->
-    <!--<logger name="org.springframework" level="DEBUG" />-->
-    <!--<logger name="com.ibatis" level="DEBUG" />-->
-    <!--<logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG" />-->
-    <!--<logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG" />-->
-    <!--<logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG" />-->
-    <!--<logger name="java.sql.Connection" level="DEBUG" />-->
-    <!--<logger name="java.sql.Statement" level="DEBUG" />-->
-    <!--<logger name="java.sql.PreparedStatement" level="DEBUG" />-->
 
 
-    <!--&lt;!&ndash; 生产环境，将此级别配置为适合的级别，以名日志文件太多或影响程序性能 &ndash;&gt;-->
+
+    <!-- 生产环境，将此级别配置为适合的级别，以名日志文件太多或影响程序性能 -->
     <!--<root level="INFO">-->
     <!--<appender-ref ref="FILEDEBUG" />-->
     <!--<appender-ref ref="FILEINFO" />-->
@@ -190,8 +183,8 @@
     <!--<appender-ref ref="stdout" />-->
     <!--</root>-->
 
-    <property name="log.level" value="debug"/>
-    <property name="log.maxHistory" value="15"/>
+    <property name="log.level" value="DEBUG"/>
+    <property name="log.maxHistory" value="5"/>
     <property name="log.filePath" value="F:\\log\\permissionlogs"/>
     <property name="log.level" value="debug"/>
     <property name="log.pattern"
@@ -207,7 +200,7 @@
     <appender name="debugAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.filePath}/debug.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${log.filePath}/debug/debug.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <FileNamePattern>${log.filePath}/debug/debug.%d{yyyy-MM-dd HH:mm}.log.gz</FileNamePattern>
         </rollingPolicy>
         <maxHistory>${log.maxHistory}</maxHistory>
         <encoder>
@@ -223,7 +216,7 @@
     <appender name="infoAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.filePath}/debug.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${log.filePath}/info/info.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <FileNamePattern>${log.filePath}/info/info.%d{yyyy-MM-dd HH:mm}.log.gz</FileNamePattern>
         </rollingPolicy>
         <maxHistory>${log.maxHistory}</maxHistory>
         <encoder>
@@ -239,7 +232,7 @@
     <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.filePath}/debug.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${log.filePath}/error/error.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <FileNamePattern>${log.filePath}/error/error.%d{yyyy-MM-dd HH:mm}.log.gz</FileNamePattern>
         </rollingPolicy>
         <maxHistory>${log.maxHistory}</maxHistory>
         <encoder>
@@ -257,9 +250,19 @@
         <appender-ref ref="errorAppender"/>
 
     </logger>
-
+    <logger name="org.springframework" level="${log.level}" />
+    <logger name="com.ibatis" level="${log.level}" />
+    <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="${log.level}" />
+    <logger name="com.ibatis.common.jdbc.ScriptRunner" level="${log.level}" />
+    <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="${log.level}" />
+    <logger name="java.sql.Connection" level="${log.level}" />
+    <logger name="java.sql.Statement" level="${log.level}" />
+    <logger name="java.sql.PreparedStatement" level="${log.level}" />
     <root level="${log.level}">
         <appender-ref ref="console"/>
+        <appender-ref ref="debugAppender"/>
+        <appender-ref ref="infoAppender"/>
+        <appender-ref ref="errorAppender"/>
     </root>
 
 </configuration>

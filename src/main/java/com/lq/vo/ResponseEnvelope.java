@@ -1,6 +1,5 @@
 package com.lq.vo;
 
-import com.dcstar.sales.web.rest.exception.RestApiError;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 

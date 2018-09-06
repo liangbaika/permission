@@ -15,6 +15,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
@@ -31,6 +32,7 @@ import java.util.Set;
  * <p>
  * Also it support some enhanced features from orika by implements {@link MapperFacade}
  */
+@Component
 public class OrikaBeanMapper implements ApplicationContextAware, InitializingBean, MapperFacade, BeanMapper {
 
     private final Logger logger = LoggerFactory.getLogger(OrikaBeanMapper.class);
@@ -45,7 +47,7 @@ public class OrikaBeanMapper implements ApplicationContextAware, InitializingBea
 
     private Class<? extends Annotation> annotationField = MapField.class;
 
-    private String basePackage;
+    private String basePackage="com.lq.**";
 
     private final MapClassScanner scanner = new MapClassScanner();
 
