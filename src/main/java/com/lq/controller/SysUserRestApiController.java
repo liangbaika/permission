@@ -32,26 +32,22 @@ public class SysUserRestApiController {
     @Autowired
     private SysUserService sysUserService;
 
-    @GetMapping(value = "/lq/sysUser/{id}")
+    @GetMapping(value = "/lq/sysUser/{id}/json")
     public ResponseEnvelope<SysUserVO> getSysUserById(@PathVariable Integer id) {
         SysUserModel sysUserModel = sysUserService.findByPrimaryKey(id);
         SysUserVO sysUserVO = beanMapper.map(sysUserModel, SysUserVO.class);
         ResponseEnvelope<SysUserVO> responseEnv = new ResponseEnvelope<>(sysUserVO, true);
-        logger.info("info test");
-        logger.error("error test");
-        logger.debug("debug test");
-        logger.info("info responseEnv {}", responseEnv);
         return responseEnv;
     }
 
-    @GetMapping(value = "/lq/sysUser")
+    @GetMapping(value = "/lq/sysUser/page")
     public ResponseEnvelope<Page<SysUserModel>> listSysUser(SysUserVO sysUserVO, Pageable pageable) {
-
         SysUserModel param = beanMapper.map(sysUserVO, SysUserModel.class);
         List<SysUserModel> sysUserModelModels = sysUserService.selectPage(param, pageable);
         long count = sysUserService.selectCount(param);
         Page<SysUserModel> page = new PageImpl<>(sysUserModelModels, pageable, count);
         ResponseEnvelope<Page<SysUserModel>> responseEnv = new ResponseEnvelope<>(page, true);
+
         return responseEnv;
     }
 

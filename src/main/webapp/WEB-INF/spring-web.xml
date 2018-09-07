@@ -10,13 +10,21 @@
     http://www.springframework.org/schema/mvc
     http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
     <context:component-scan base-package="com.lq.*"/>
+
     <context:annotation-config/>
-    <mvc:annotation-driven/>
-    <mvc:default-servlet-handler/>
+
+    <mvc:annotation-driven>
+        <mvc:argument-resolvers>
+            <bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver">
+                <property name="pageParameterName" value="page"/>
+                <property name="sizeParameterName" value="pageSize"/>
+            </bean>
+        </mvc:argument-resolvers>
+    </mvc:annotation-driven>
     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
     <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/views/"/>
+        <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 </beans>
