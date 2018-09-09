@@ -12,7 +12,9 @@
     <context:component-scan base-package="com.lq.*"/>
 
     <context:annotation-config/>
-
+    <mvc:interceptors>
+        <bean class="com.lq.utils.HttpInteceptor"/>
+    </mvc:interceptors>
     <mvc:annotation-driven>
         <mvc:argument-resolvers>
             <bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver">
@@ -27,4 +29,6 @@
         <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+
+    <bean class="com.lq.utils.ApplicationContextHelper" lazy-init="false"/>
 </beans>
