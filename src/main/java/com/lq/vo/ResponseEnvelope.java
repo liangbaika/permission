@@ -2,6 +2,7 @@ package com.lq.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
  * @param <T>
  */
 @JsonInclude(Include.NON_EMPTY)
+@ToString
 public class ResponseEnvelope<T> {
     private T data;
     private boolean status;

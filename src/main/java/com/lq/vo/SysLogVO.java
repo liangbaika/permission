@@ -1,7 +1,9 @@
 package com.lq.vo;
 
-import java.util.Date;
+import lombok.ToString;
 
+import java.util.Date;
+@ToString
 public class SysLogVO{
 	
 	private Integer id;

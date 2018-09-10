@@ -1,9 +1,11 @@
 package com.lq.vo;
 
 
+import lombok.ToString;
+
 import java.util.Date;
 
-
+@ToString
 public class SysAclModuleVO{
 	
 	private Integer id;
