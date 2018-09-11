@@ -17,6 +17,9 @@ public class HttpInteceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestUrl = request.getRequestURL().toString();
+        if (requestUrl.endsWith(".css") || requestUrl.endsWith(".js")) {
+            return true;
+        }
         Map parameterMap = request.getParameterMap();
         String paramStrings = JsonMapper.obj2String(parameterMap);
         long start = System.currentTimeMillis();

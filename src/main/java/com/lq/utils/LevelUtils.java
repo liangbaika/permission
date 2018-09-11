@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 public class LevelUtils {
 
     private static final String SPILTOR = ".";
-    private static final String ROOT = "0";
+    public  static final String ROOT = "0";
 
     public static String calculateLevel(String parentLevel, Integer parentId) {
         return StringUtils.isNotBlank(parentLevel) ? StringUtils.join(parentLevel, SPILTOR, parentId) : ROOT;
