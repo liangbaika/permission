@@ -34,6 +34,10 @@ public class HttpInteceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        if (request.getAttribute(START_TIME) == null) {
+            return;
+        }
+
         Long start = (Long) request.getAttribute(START_TIME);
         Long now = System.currentTimeMillis();
         log.info("request complete:  cost {} millis  ", now - start);

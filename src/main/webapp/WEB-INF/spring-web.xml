@@ -15,11 +15,11 @@
     <mvc:interceptors>
         <bean class="com.lq.utils.HttpInteceptor"/>
     </mvc:interceptors>
-    <mvc:resources mapping="/js/lay/css/**" location="WEB-INF/css/"/>
-    <mvc:resources mapping="/js/**" location="WEB-INF/js/"/>
+    <mvc:resources mapping="static/**" location="static/"/>
+   <!-- <mvc:resources mapping="/js/**" location="WEB-INF/js/"/>
     <mvc:resources mapping="/css/**" location="WEB-INF/css/"/>
     <mvc:resources mapping="/font/**" location="WEB-INF/font/"/>
-    <mvc:resources mapping="/images/**" location="WEB-INF/images/face/"/>
+    <mvc:resources mapping="/images/**" location="WEB-INF/images/face/"/>-->
 
     <mvc:annotation-driven>
         <mvc:argument-resolvers>

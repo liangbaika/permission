@@ -17,4 +17,8 @@ public class RouteController {
         return "index";
     }
 
+    @RequestMapping("login")
+    public String toLogin() {
+        return "login";
+    }
 }
