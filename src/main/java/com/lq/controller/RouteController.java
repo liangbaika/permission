@@ -21,4 +21,9 @@ public class RouteController {
     public String toLogin() {
         return "login";
     }
+
+    @RequestMapping("dept")
+    public String toDept() {
+        return "dept";
+    }
 }

@@ -47,7 +47,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="login">部门管理</a></li>
-                    <li><a href="login">用户管理</a></li>
+                    <li><a href="dept">用户管理</a></li>
                 </ul>
             </li>
         </ul>

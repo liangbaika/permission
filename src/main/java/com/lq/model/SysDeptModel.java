@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @ToString
 @Builder
@@ -31,6 +32,16 @@ public class SysDeptModel {
     private String operator;
     private Date operteTime;
     private String operateIp;
+
+    private List<SysDeptModel> child;
+
+    public List<SysDeptModel> getChild() {
+        return child;
+    }
+
+    public void setChild(List<SysDeptModel> child) {
+        this.child = child;
+    }
 
     public void setId(Integer id) {
         this.id = id;
