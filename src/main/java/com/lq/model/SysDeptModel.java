@@ -1,5 +1,6 @@
 package com.lq.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -16,11 +17,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SysDeptModel {
-
     private Integer id;
 
     @NotBlank(message = "部门名称不能为空")
     @Length(max = 20, min = 2, message = "部门名长度需要在2到15之间")
+    @JsonProperty(value = "text")
     private String name;
     @NotNull(message = "展示顺序不能为空")
     private Integer seq;
@@ -32,7 +33,7 @@ public class SysDeptModel {
     private String operator;
     private Date operteTime;
     private String operateIp;
-
+ @JsonProperty(value = "nodes")
     private List<SysDeptModel> child;
 
     public List<SysDeptModel> getChild() {

@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,7 +55,7 @@ public class TestController {
     };
 
     //测试组织部门树
-    @GetMapping("/tree.json")
+    @PostMapping("/tree.json")
     public ResponseEnvelope toTree() {
         //查询所有的组织结构
         List<SysDeptModel> treeModels = sysDeptService.selectPage(new SysDeptModel(), null);
