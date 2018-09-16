@@ -1,6 +1,7 @@
 package com.lq.controller;
 
 import com.lq.mapping.BeanMapper;
+import com.lq.utils.LoginHolder;
 import com.lq.vo.ResponseEnvelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,11 @@ public class SysUserRestApiController {
         SysUserModel param = beanMapper.map(sysUserVO, SysUserModel.class);
         List<SysUserModel> sysUserModelModels = sysUserService.selectPage(param, pageable);
         long count = sysUserService.selectCount(param);
+        SysUserModel user = LoginHolder.getUser();
+        if (user != null) {
+            System.out.println("  现在的user:" + user.getId());
+
+        }
         Page<SysUserModel> page = new PageImpl<>(sysUserModelModels, pageable, count);
         ResponseEnvelope<Page<SysUserModel>> responseEnv = new ResponseEnvelope<>(page, true);
 
@@ -59,9 +65,19 @@ public class SysUserRestApiController {
         return responseEnv;
     }
 
+
+    @GetMapping(value = "/lq/sysUser/login")
+    public ResponseEnvelope<Integer> login(SysUserVO sysUserVO) {
+        SysUserModel sysUserModel = beanMapper.map(sysUserVO, SysUserModel.class);
+        Integer result = sysUserService.login(sysUserModel);
+        ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<>(result, true);
+        return responseEnv;
+    }
+
     @DeleteMapping(value = "/lq/sysUser/{id}")
     public ResponseEnvelope<Integer> deleteSysUserByPrimaryKey(@PathVariable Integer id) {
         Integer result = sysUserService.deleteByPrimaryKey(id);
+
         ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<>(result, true);
         return responseEnv;
     }

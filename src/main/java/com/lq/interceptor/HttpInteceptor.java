@@ -1,9 +1,12 @@
-package com.lq.utils;
+package com.lq.interceptor;
 
+import com.lq.utils.JsonMapper;
+import com.lq.utils.LoginHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import sun.rmi.log.LogHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,10 +37,10 @@ public class HttpInteceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        LoginHolder.remove();
         if (request.getAttribute(START_TIME) == null) {
             return;
         }
-
         Long start = (Long) request.getAttribute(START_TIME);
         Long now = System.currentTimeMillis();
         log.info("request complete:  cost {} millis  ", now - start);

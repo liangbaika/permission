@@ -38,7 +38,7 @@ public class SysDeptRestApiController {
 		return responseEnv;
 	}
 
-	@GetMapping(value = "/lq/sysDept")
+	@GetMapping(value = "/sysDept.json")
 	public ResponseEnvelope<Page<SysDeptModel>> listSysDept(SysDeptVO sysDeptVO, Pageable pageable){
 
 		SysDeptModel param = beanMapper.map(sysDeptVO, SysDeptModel.class);

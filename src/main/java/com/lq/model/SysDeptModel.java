@@ -21,19 +21,16 @@ public class SysDeptModel {
 
     @NotBlank(message = "部门名称不能为空")
     @Length(max = 20, min = 2, message = "部门名长度需要在2到15之间")
-    @JsonProperty(value = "text")
     private String name;
     @NotNull(message = "展示顺序不能为空")
     private Integer seq;
     @Length(message = "备注长度不能超过150", max = 150)
     private String remark;
-
     private Integer parentId;
     private String level;
     private String operator;
     private Date operteTime;
     private String operateIp;
- @JsonProperty(value = "nodes")
     private List<SysDeptModel> child;
 
     public List<SysDeptModel> getChild() {

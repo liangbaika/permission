@@ -13,7 +13,7 @@
 
     <context:annotation-config/>
     <mvc:interceptors>
-        <bean class="com.lq.utils.HttpInteceptor"/>
+        <bean class="com.lq.interceptor.HttpInteceptor"/>
     </mvc:interceptors>
     <mvc:resources mapping="static/**" location="static/"/>
    <!-- <mvc:resources mapping="/js/**" location="WEB-INF/js/"/>

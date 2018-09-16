@@ -24,4 +24,5 @@ public long selectCount(SysUserModel sysUserModel);
 
 public List<SysUserModel> selectPage(SysUserModel sysUserModel, Pageable pageable);
 
+    Integer login(SysUserModel sysUserModel);
 }

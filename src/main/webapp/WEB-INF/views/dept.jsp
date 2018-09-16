@@ -16,18 +16,78 @@
 
 
         <!-- Main content -->
-        <section class="content container-fluid">
-            <div id="tree">
-            </div>
-            <div id="tree2"  style="width: 250px">
-            </div>
+        <div class="content container-fluid">
+            <div class="row-fluid">
+                <div    class="span4" id="tree3" >
+                    <ul id="treeDemo" class="ztree"></ul>
+                </div>
+                <div   class="span8">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">Data Table With Full Features</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Rendering engine</th>
+                                    <th>Browser</th>
+                                    <th>Platform(s)</th>
+                                    <th>Engine version</th>
+                                    <th>CSS grade</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Misc</td>
+                                    <td>Links</td>
+                                    <td>Text only</td>
+                                    <td>-</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td>Misc</td>
+                                    <td>Lynx</td>
+                                    <td>Text only</td>
+                                    <td>-</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td>Misc</td>
+                                    <td>IE Mobile</td>
+                                    <td>Windows Mobile 6</td>
+                                    <td>-</td>
+                                    <td>C</td>
+                                </tr>
+                                <tr>
+                                    <td>Misc</td>
+                                    <td>PSP browser</td>
+                                    <td>PSP</td>
+                                    <td>-</td>
+                                    <td>C</td>
+                                </tr>
+                                <tr>
+                                    <td>Other browsers</td>
+                                    <td>All others</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>U</td>
+                                </tr>
+                                </tbody>
 
-
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
 
             <!--------------------------
               | Your Page Content Here |
               -------------------------->
-        </section>
+        </div>
 
         <!-- /.content -->
 
@@ -38,7 +98,7 @@
 
     <!-- Add the sidebar's background. This div must be placed
     immediately after the control sidebar -->
-    <div class="control-sidebar-bg"></div>
+    <%--<div class="control-sidebar-bg"></div>--%>
 </div>
 <!-- ./wrapper -->
 
@@ -52,83 +112,57 @@
 <script src="/static/dist/js/adminlte.min.js"></script>
 <script src="/static/plugins/iCheck/icheck.min.js"></script>
 <script src="/static/dist/js/bootstrap-treeview.min.js"></script>
+<script src="/static/jquery.ztree.all.min.js"></script>
+<script src="/static/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/static/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
 <script>
     $(function () {
-        var data = [
-            {
-                text: "Parent 1",
-                nodes: [
-                    {
-                        text: "Child 1",
-                        nodes: [
-                            {
-                                text: "Grandchild 1"
-                            },
-                            {
-                                text: "Grandchild 2"
-                            }
-                        ]
-                    },
-                    {
-                        text: "Child 2"
-                    }
-                ]
-            },
-            {
-                text: "Parent 2",
-                id:2
-            },
-            {
-                text: "Parent 3",
-                id:3
-            },
-            {
-                text: "Parent 4",
-                id:4
-            },
-            {
-                text: "Parent 5",
-                id:5
-            }
-        ];
-        var a = 1;
-
-        function getTree() {
-
-            return data;
-        }
-
-        $('#tree').treeview({
-            data: getTree(),
-            onNodeSelected:function (event,node) {
-                alert(node.id+"---"+node.text)
-                if(node.id==4){
-                    $("#tree").treeview(true).addNode(getTree(),node,node.id,{ silent: true });
-                }
-            }
+        $('#example1').DataTable({
+            'paging'      : true,
+            'lengthChange': false,
+            'searching'   : true,
+            'ordering'    : true,
+            'info'        : false,
+            'autoWidth'   : true
         })
-        referModule();
-    });
+    })
+</script>
 
-    var referModule = function () {
+<SCRIPT type="text/javascript">
+    var setting = {
+        view: {
+            addHoverDom: addHoverDom,
+            removeHoverDom: removeHoverDom,
+            selectedMulti: true
+        },
+        check: {
+            enable: true
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                rootPid: 0,
+                pIdKey: "parentId"
+            }
+        },
+        key: {
+            children: "child"
+        },
+        edit: {
+            enable: true
+        }
+    };
+    var zNodes = [];
 
+    $(document).ready(function () {
         $.ajax({
-            type: "post",
+            type: "GET",
             dateType: "json",
-            url: "/test/tree.json",
+            url: "/dept/sysDept.json",
             success: function (e) {
-                defaultData = e.data;
-                $('#tree2').treeview({
-                    data: defaultData,//数据源参数
-                    color: "#428bca",
-                    showBorder: true,
-                    // levels:2,
-                    onNodeSelected: function (event, node) {
-//                        alert(node.id + "前面是id，后面是名字" + node.text);//这里拿到id和name，就可以通过函数跳转触发点击事件
-                    },
-                    onNodeUnselected: function (event, node) {
-                    }
-                });
+                zNodes = e.data.content;
+                $.fn.zTree.init($("#treeDemo"), setting, zNodes);
             }
             , error: function () {
                 alert("加载树异常！");
@@ -136,42 +170,37 @@
 
         })
 
-    }
-
-
-
-
-
-
-    function buildDomTree() {
-        var data = [];
-        function walk(nodes, data) {
-            if (!nodes) { return; }
-            $.each(nodes, function (id, node) {
-                var obj = {
-                    id: id,
-                    text: node.nodeName + " - " + (node.innerText ? node.innerText : ''),
-                    tags: [node.childElementCount > 0 ? node.childElementCount + ' child elements' : '']
-                };
-                if (node.childElementCount > 0) {
-                    obj.nodes = [];
-                    walk(node.children, obj.nodes);
-                }
-                data.push(obj);
-            });
-        }
-        walk($('html')[0].children, data);
-        return data;
-    }
-    $(function() {
-        var options = {
-            bootstrap2: false,
-            showTags: true,
-            levels: 5,
-            data: buildDomTree()
-        };
-        $('#treeview').treeview(options);
     });
-</script>
+
+    var newCount = 1;
+
+    function addHoverDom(treeId, treeNode) {
+        var sObj = $("#" + treeNode.tId + "_span");
+        if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId +
+            "' title='add node' onfocus='this.blur();'></span>";
+        sObj.after(addStr);
+        var btn = $("#addBtn_" + treeNode.tId);
+        if (btn) btn.bind("click", function () {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            $("#addBtn_" + treeNode.tId).click(function () {
+                $("#myModalLabel").text("新增");
+
+                $('#myModal').modal()
+            });
+            zTree.addNodes(treeNode, {
+                id: (100 + newCount),
+                pId: treeNode.id,
+                name: "new node" + (newCount++)
+            });
+            return false;
+        });
+    };
+
+    function removeHoverDom(treeId, treeNode) {
+        $("#addBtn_" + treeNode.tId).unbind().remove();
+    };
+
+</SCRIPT>
 </body>
 </html>
