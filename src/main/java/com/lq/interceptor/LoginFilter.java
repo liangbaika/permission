@@ -29,11 +29,8 @@ public class LoginFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         SysUserModel user = (SysUserModel) request.getSession().getAttribute("user");
         if (user != null) {
-            if (LoginHolder.getUser() == null && LoginHolder.getRequest() == null) {
-                LoginHolder.addUser(user);
-                LoginHolder.addRequest(request);
-            }
-
+            LoginHolder.addUser(user);
+            LoginHolder.addRequest(request);
             log.info("add user and  request  to  LoginHolder success");
         }
         filterChain.doFilter(request, response);
