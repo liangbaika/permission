@@ -8,7 +8,7 @@ package com.lq.enums;
 public enum DataUseful {
 
     USEFUL(1, "有效"),
-    NOUSEFUL(-1, "冻结"),;
+    NOUSEFUL(-1, "无效"),;
 
     private Integer code;
     private String msg;

@@ -47,10 +47,6 @@ public class SysUserRestApiController {
         List<SysUserModel> sysUserModelModels = sysUserService.selectPage(param, pageable);
         long count = sysUserService.selectCount(param);
         SysUserModel user = LoginHolder.getUser();
-        if (user != null) {
-            System.out.println("  现在的user:" + user.getId());
-
-        }
         Page<SysUserModel> page = new PageImpl<>(sysUserModelModels, pageable, count);
         ResponseEnvelope<Page<SysUserModel>> responseEnv = new ResponseEnvelope<>(page, true);
 
@@ -66,7 +62,7 @@ public class SysUserRestApiController {
     }
 
 
-    @GetMapping(value = "/lq/sysUser/login")
+    @PostMapping(value = "/lq/sysUser/login")
     public ResponseEnvelope<Integer> login(SysUserVO sysUserVO) {
         SysUserModel sysUserModel = beanMapper.map(sysUserVO, SysUserModel.class);
         Integer result = sysUserService.login(sysUserModel);
@@ -74,6 +70,12 @@ public class SysUserRestApiController {
         return responseEnv;
     }
 
+    @GetMapping(value = "/lq/sysUser/logout")
+    public ResponseEnvelope<Integer> logout() {
+        Integer result = sysUserService.logout();
+        ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<>(result, true);
+        return responseEnv;
+    }
     @DeleteMapping(value = "/lq/sysUser/{id}")
     public ResponseEnvelope<Integer> deleteSysUserByPrimaryKey(@PathVariable Integer id) {
         Integer result = sysUserService.deleteByPrimaryKey(id);

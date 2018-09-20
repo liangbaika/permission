@@ -27,12 +27,14 @@ public class LoginFilter implements Filter {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        SysUserModel user = (SysUserModel) request.getSession().getAttribute("user");
-        if (user != null) {
+        Object objUser = request.getSession().getAttribute("user");
+
+        if (objUser != null) {
+            SysUserModel user = (SysUserModel) objUser;
             LoginHolder.addUser(user);
-            LoginHolder.addRequest(request);
-            log.info("add user and  request  to  LoginHolder success");
+            log.info("add user  to  LoginHolder success");
         }
+        LoginHolder.addRequest(request);
         filterChain.doFilter(request, response);
     }
 

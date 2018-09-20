@@ -5,6 +5,7 @@ import com.lq.enums.ErrorCode;
 import com.lq.exception.ParamException;
 import com.lq.mapping.BeanMapper;
 import com.lq.utils.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -27,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Slf4j
 public class SysUserServiceImpl implements SysUserService {
 
     @Autowired
@@ -47,24 +49,25 @@ public class SysUserServiceImpl implements SysUserService {
         }
         //内部系统 自己生成密码
         String passwd = PasswdGenerator.generatePasswdRandom();
+        //todo  send  the email to notice  the  user  about  password
         sysUserModel.setPassword(EncryptUtils.Md5Encrypt(passwd));
-        //todo encript
-        sysUserModel.setPassword(passwd);
-        //todo  send  email
-        sysUserModel.setOperateIp("");
+        sysUserModel.setOperateIp("127.0.0.1");
         sysUserModel.setOperateTime(new Date());
-        sysUserModel.setOperater("");
-
-
+        sysUserModel.setOperater(LoginHolder.getUser().getUsername());
         return sysUserRepo.insertSelective(beanMapper.map(sysUserModel, SysUser.class));
     }
 
     private boolean checkPhoneExist(String telephone) {
-        return false;
+        SysUserModel sysUserModel = sysUserRepo.selectUserByKeyWord(telephone);
+        return sysUserModel==null? false:true;
     }
-
+    private boolean checkNameExist(String telephone) {
+        SysUserModel sysUserModel = sysUserRepo.selectUserByKeyWord(telephone);
+        return sysUserModel==null? false:true;
+    }
     private boolean checkEmailExist(String mail) {
-        return false;
+        SysUserModel sysUserModel = sysUserRepo.selectUserByKeyWord(mail);
+        return sysUserModel==null? false:true;
     }
 
     @Transactional
@@ -108,22 +111,35 @@ public class SysUserServiceImpl implements SysUserService {
         if (sysUserModelDB == null) {
             throw new ParamException(ErrorCode.USER_NOT_EXIST.getMsg());
         }
-        if(sysUserModelDB.getStatus().equals(DataUseful.NOUSEFUL.getCode())){
+        if (sysUserModelDB.getStatus().equals(DataUseful.NOUSEFUL.getCode())) {
             throw new ParamException(ErrorCode.USER_FROZI.getMsg());
         }
         if (!sysUserModelDB.getPassword().equals(EncryptUtils.Md5Encrypt(sysUserModel.getPassword()))) {
             throw new ParamException(ErrorCode.PARAM_ERROR.getMsg());
         }
-
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
-                .getRequestAttributes()).getRequest();
-        if(request!=null){
-            HttpSession session = request.getSession();
-            session.setAttribute("user",sysUserModelDB);
+        // put  the  user  info  in  http session
+        HttpServletRequest currentRequest = LoginHolder.getRequest();
+        if (currentRequest != null) {
+            HttpSession session = currentRequest.getSession(true);
+            session.setAttribute("user", sysUserModelDB);
+        } else {
+            // generally, can not reach  hear
+            log.debug("put user in seesion error");
         }
-        SysUserModel user = LoginHolder.getUser();
 
-        return sysUserModelDB.getId();
+//        return  1; a flag >0  represent success
+        return DataUseful.USEFUL.getCode();
+    }
+
+    @Override
+    public Integer logout() {
+        HttpSession session = LoginHolder.getRequest().getSession();
+        if (session != null) {
+            session.invalidate();
+        } else {
+            return DataUseful.NOUSEFUL.getCode();
+        }
+        return DataUseful.USEFUL.getCode();
     }
 
     @Transactional
@@ -136,13 +152,14 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public int updateByPrimaryKeySelective(SysUserModel sysUserModel) {
         ParamValidator.check(sysUserModel);
+        SysUserModel before = findByPrimaryKey(sysUserModel.getId());
         if (checkEmailExist(sysUserModel.getMail())) {
             throw new ParamException(ErrorCode.EMAIL_EXIST.getMsg());
         }
         if (checkPhoneExist(sysUserModel.getTelephone())) {
             throw new ParamException(ErrorCode.PHONE_EXIST.getMsg());
         }
-        SysUserModel before = findByPrimaryKey(sysUserModel.getId());
+
         if (before == null) {
             throw new ParamException(ErrorCode.USER_NOT_EXIST.getMsg());
         }
