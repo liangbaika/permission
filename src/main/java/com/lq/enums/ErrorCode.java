@@ -19,7 +19,8 @@ public enum ErrorCode {
     USER_NOT_EXIST(10006,"用户不存在"),
     USER_FROZI(10007,"用户被冻结，请联系管理员"),
     DEPT_REPEAT(10008,"部门名重复"),
-    DELETE_ERROR1(10009,"此部门下已有数据 删除失败")
+    DELETE_ERROR1(10009,"此部门下已有数据 删除失败"),
+    USERNAME_EXIST(10010,"用户名已存在"),
 
     ;
 

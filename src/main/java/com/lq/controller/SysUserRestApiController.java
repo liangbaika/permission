@@ -79,7 +79,6 @@ public class SysUserRestApiController {
     @DeleteMapping(value = "/lq/sysUser/{id}")
     public ResponseEnvelope<Integer> deleteSysUserByPrimaryKey(@PathVariable Integer id) {
         Integer result = sysUserService.deleteByPrimaryKey(id);
-
         ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<>(result, true);
         return responseEnv;
     }

@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * @Auther: LQ
  * @Date: 2018/9/16 18:43
- * @Description:
+ * @Description:encyypt utils
  */
 public class EncryptUtils {
 
