@@ -1,16 +1,24 @@
 package com.lq.model;
 
 import com.lq.mapping.annotation.MapClass;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 @MapClass("com.lq.entity.SysAclModule")
 public class SysAclModuleModel{
 	
 	private Integer id;
+	@NotBlank(message = "权限模块名称不能为空")
+	@Length(min = 2,max = 64,message = "长度需在2-64之间")
 	private String name;
-	private Integer parentId;
+
+	private Integer parentId=0;
 	private String level;
+	@NotNull(message = "展示顺序不能为空")
 	private Integer seq;
-	private Integer status;
+	private Integer status=1;
 	private String remark;
 	private String operator;
 	private Date operteTime;

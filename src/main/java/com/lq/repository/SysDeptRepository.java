@@ -28,7 +28,6 @@ public interface SysDeptRepository {
     /**
      * 检查 在此parentid 下是否已重复
      *
-     * @param id       当前id
      * @param parentId 父id
      * @param name     组织或部门名
      * @return

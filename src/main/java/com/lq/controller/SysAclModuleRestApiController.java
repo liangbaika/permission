@@ -1,7 +1,10 @@
 package com.lq.controller;
 
+import com.lq.entity.SysAclModule;
+import com.lq.factory.ResponseEnvelopFactory;
 import com.lq.mapping.BeanMapper;
 import com.lq.model.SysAclModuleModel;
+import com.lq.model.SysDeptModel;
 import com.lq.service.SysAclModuleService;
 import com.lq.vo.ResponseEnvelope;
 import com.lq.vo.SysAclModuleVO;
@@ -74,4 +77,11 @@ public class SysAclModuleRestApiController {
 		return responseEnv;
 	}
 
+
+
+	@GetMapping(value = "/lq/sysDept/tree")
+	public ResponseEnvelope<List<SysAclModule>> getSysAclModuleTree() {
+		List<SysAclModule> sysAclModules = sysAclModuleService.getSysAclModuleTree();
+		return ResponseEnvelopFactory.success(sysAclModules);
+	}
 }

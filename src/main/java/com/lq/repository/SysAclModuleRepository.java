@@ -23,4 +23,12 @@ public interface SysAclModuleRepository {
     int selectCount(@Param("sysaclmodule") SysAclModule sysaclmodule);
 
     List<com.lq.entity.SysAclModule> selectPage(@Param("sysaclmodule") SysAclModule sysaclmodule, @Param("pageable") Pageable pageable);
+
+    /**
+     * 查询当前权限下 名字是否重复
+     * @param parentId
+     * @param name
+     * @return
+     */
+    int selectAclModuleRepeat(Integer parentId, String name);
 }

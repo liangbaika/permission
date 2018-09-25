@@ -21,7 +21,7 @@ public enum ErrorCode {
     DEPT_REPEAT(10008,"部门名重复"),
     DELETE_ERROR1(10009,"此部门下已有数据 删除失败"),
     USERNAME_EXIST(10010,"用户名已存在"),
-
+   SYSACL_MODULE_NOTEXIST(10011,"该权限不存在"),
     ;
 
     private Integer code;

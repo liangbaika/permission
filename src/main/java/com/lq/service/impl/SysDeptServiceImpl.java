@@ -10,7 +10,6 @@ import com.lq.model.SysDeptModel;
 import com.lq.repository.SysDeptRepository;
 import com.lq.service.SysDeptService;
 import com.lq.utils.Const;
-import com.lq.utils.LevelUtils;
 import com.lq.utils.LoginHolder;
 import com.lq.utils.ParamValidator;
 import org.apache.commons.lang3.StringUtils;
@@ -66,7 +65,7 @@ public class SysDeptServiceImpl implements SysDeptService {
             throw new ParamException(ErrorCode.PARAM_MISS.getMsg());
         }
         if (parentId == null) {
-            parentId = Const.DEPT_ROOT;
+            parentId = Const.DATA_ROOT;
         }
         int res = sysDeptRepo.selectDeptRepeat(parentId, name);
         if (res > 0) {
@@ -125,7 +124,7 @@ public class SysDeptServiceImpl implements SysDeptService {
         ArrayList<SysDeptModel> rootNodes = Lists.newArrayList();
         while (iterator.hasNext()) {
             SysDeptModel node = iterator.next();
-            if (node.getParentId() == Const.DEPT_ROOT) {
+            if (node.getParentId() == Const.DATA_ROOT) {
                 rootNodes.add(node);
                 iterator.remove();
             }

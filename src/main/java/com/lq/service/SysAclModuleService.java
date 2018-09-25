@@ -1,6 +1,7 @@
 
 package com.lq.service;
 
+import com.lq.entity.SysAclModule;
 import com.lq.model.SysAclModuleModel;
 import java.util.Date;
 import org.springframework.data.domain.Pageable;
@@ -24,4 +25,9 @@ public long selectCount(SysAclModuleModel sysAclModuleModel);
 
 public List<SysAclModuleModel> selectPage(SysAclModuleModel sysAclModuleModel, Pageable pageable);
 
+    /**
+     * 权限模块树
+     * @return
+     */
+    List<SysAclModule> getSysAclModuleTree();
 }

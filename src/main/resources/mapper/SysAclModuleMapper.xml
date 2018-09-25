@@ -26,7 +26,7 @@
     delete from sys_acl_module
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.lq.entity.SysAclModule">
+  <insert id="insert" parameterType="com.lq.entity.SysAclModule"  useGeneratedKeys="true" keyProperty="id" keyColumn="id"  >
     insert into sys_acl_module (id, name, parent_id, 
       level, seq, status, 
       remark, operator, operte_time, 
@@ -36,7 +36,7 @@
       #{remark,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{operteTime,jdbcType=TIMESTAMP}, 
       #{operateIp,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.lq.entity.SysAclModule">
+  <insert id="insertSelective" parameterType="com.lq.entity.SysAclModule" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
     insert into sys_acl_module
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -227,5 +227,12 @@
     <if test="param2.offset >= 0 and param2.pageSize > 0">
       limit ${param2.offset}, ${param2.pageSize}
     </if>
+  </select>
+
+  <select id="selectAclModuleRepeat" resultType="java.lang.Integer">
+    select  count(s.id)
+    from sys_acl_module s
+    where  1=1 and s.parent_id =#{parentId}
+    and s.name =#{name}
   </select>
 </mapper>

@@ -26,7 +26,7 @@ public class SysDeptModel {
     private Integer seq;
     @Length(message = "备注长度不能超过150", max = 150)
     private String remark;
-    private Integer parentId;
+    private Integer parentId=0;
     private String level;
     private String operator;
     private Date operteTime;
