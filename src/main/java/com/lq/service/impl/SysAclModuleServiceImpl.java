@@ -1,10 +1,12 @@
 package com.lq.service.impl;
 
+import com.google.common.collect.Lists;
 import com.lq.enums.DataUseful;
 import com.lq.enums.ErrorCode;
 import com.lq.exception.ParamException;
 import com.lq.exception.PermissionException;
 import com.lq.mapping.BeanMapper;
+import com.lq.model.SysDeptModel;
 import com.lq.utils.Const;
 import com.lq.utils.LoginHolder;
 import com.lq.utils.ParamValidator;
@@ -18,10 +20,10 @@ import com.lq.entity.SysAclModule;
 import com.lq.repository.SysAclModuleRepository;
 import com.lq.model.SysAclModuleModel;
 import com.lq.service.SysAclModuleService;
+import org.springframework.util.CollectionUtils;
 
 import javax.security.auth.login.LoginContext;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SysAclModuleServiceImpl implements SysAclModuleService {
@@ -37,6 +39,13 @@ public class SysAclModuleServiceImpl implements SysAclModuleService {
     public int create(SysAclModuleModel sysAclModuleModel) {
         return sysAclModuleRepo.insert(beanMapper.map(sysAclModuleModel, SysAclModule.class));
     }
+
+    private Comparator<SysAclModule> comparator = new Comparator<SysAclModule>() {
+        @Override
+        public int compare(SysAclModule o1, SysAclModule o2) {
+            return o1.getSeq() - o2.getSeq();
+        }
+    };
 
     @Transactional
     @Override
@@ -141,7 +150,47 @@ public class SysAclModuleServiceImpl implements SysAclModuleService {
      */
     @Override
     public List<SysAclModule> getSysAclModuleTree() {
-        return null;
+        List<SysAclModule> allAclModules = sysAclModuleRepo.selectPage(new SysAclModule(), null);
+        if (CollectionUtils.isEmpty(allAclModules)) {
+            return Lists.newArrayList();
+        }
+        Iterator<SysAclModule> iterator = allAclModules.iterator();
+        List<SysAclModule> rootAclModules = new LinkedList<>();
+        while (iterator.hasNext()) {
+            SysAclModule next = iterator.next();
+            if (next.getParentId() == Const.DATA_ROOT) {
+                rootAclModules.add(next);
+                iterator.remove();
+            }
+        }
+        if (!rootAclModules.isEmpty()) {
+            rootAclModules.sort(comparator);
+        }
+        if (!allAclModules.isEmpty() && !rootAclModules.isEmpty()) {
+            rootAclModules.forEach(e -> constructTree(e, allAclModules));
+        }
+        return rootAclModules;
+    }
+
+    private void constructTree(SysAclModule parentNode, List<SysAclModule> allAclModules) {
+        Iterator<SysAclModule> iterator = allAclModules.iterator();
+        List<SysAclModule> childrens = new LinkedList<>();
+        while (iterator.hasNext()) {
+            SysAclModule next = iterator.next();
+            if (next.getParentId().equals(parentNode.getId())) {
+                childrens.add(next);
+                iterator.remove();
+            }
+        }
+        if (!childrens.isEmpty()) {
+            childrens.sort(comparator);
+        }
+        if (!CollectionUtils.isEmpty(childrens)) {
+            parentNode.setNodes(childrens);
+        }
+        if (!allAclModules.isEmpty() && !childrens.isEmpty()) {
+            childrens.forEach(e -> constructTree(e, allAclModules));
+        }
     }
 
     @Transactional

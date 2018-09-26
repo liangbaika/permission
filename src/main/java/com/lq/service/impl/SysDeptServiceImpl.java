@@ -119,9 +119,12 @@ public class SysDeptServiceImpl implements SysDeptService {
     public List<SysDeptModel> getSysDeptTree() {
         //查询所有的组织结构
         List<SysDeptModel> treeModels = selectPage(new SysDeptModel(), null);
+        if (CollectionUtils.isEmpty(treeModels)) {
+            return Lists.newArrayList();
+        }
         Iterator<SysDeptModel> iterator = treeModels.iterator();
         //找出顶级组织机构（这里我们定义 顶级的pid为0 ）
-        ArrayList<SysDeptModel> rootNodes = Lists.newArrayList();
+        List<SysDeptModel> rootNodes = new LinkedList<SysDeptModel>();
         while (iterator.hasNext()) {
             SysDeptModel node = iterator.next();
             if (node.getParentId() == Const.DATA_ROOT) {

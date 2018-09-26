@@ -1,6 +1,7 @@
 package com.lq.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class SysAclModule {
     private Integer id;
@@ -22,6 +23,16 @@ public class SysAclModule {
     private Date operteTime;
 
     private String operateIp;
+
+    private List<SysAclModule> nodes;
+
+    public List<SysAclModule> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(List<SysAclModule> nodes) {
+        this.nodes = nodes;
+    }
 
     public Integer getId() {
         return id;
