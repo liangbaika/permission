@@ -90,7 +90,7 @@ public class SysDeptServiceImpl implements SysDeptService {
         sysDept.setParentId(id);
         List<SysDept> sysDepts = sysDeptRepo.selectPage(sysDept, null);
         if (!CollectionUtils.isEmpty(sysDepts)) {
-            throw new PermissionException(ErrorCode.DELETE_ERROR1.getMsg());
+            throw new PermissionException(ErrorCode.DELETE_RELATION_ERROR.getMsg());
         }
         return sysDeptRepo.deleteByPrimaryKey(id);
     }

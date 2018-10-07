@@ -16,12 +16,15 @@ public enum ErrorCode {
     PARAM_INVALIDED(10003, "参数非法"),
     EMAIL_EXIST(10004, "邮箱已存在"),
     PHONE_EXIST(10005, "电话已存在"),
-    USER_NOT_EXIST(10006,"用户不存在"),
-    USER_FROZI(10007,"用户被冻结，请联系管理员"),
-    DEPT_REPEAT(10008,"部门名重复"),
-    DELETE_ERROR1(10009,"此部门下已有数据 删除失败"),
-    USERNAME_EXIST(10010,"用户名已存在"),
-   SYSACL_MODULE_NOTEXIST(10011,"该权限不存在"),
+    USER_NOT_EXIST(10006, "用户不存在"),
+    USER_FROZI(10007, "用户被冻结，请联系管理员"),
+    DEPT_REPEAT(10008, "部门名重复"),
+    DELETE_RELATION_ERROR(10009, "此部门下已有数据 删除失败"),
+    USERNAME_EXIST(10010, "用户名已存在"),
+    SYSACL_MODULE_NOTEXIST(10011, "该权限不存在"),
+    ACLMODULE_RELATION_ERROR(10012, "该权限模块下已有数据 删除失败"),
+    ACL_CREATE_ERROR(10013, "该权限模块下已存在此权限点 创建失败"),
+    SYSACL_NOTEXIST(10014, "该权限点不存在"),
     ;
 
     private Integer code;

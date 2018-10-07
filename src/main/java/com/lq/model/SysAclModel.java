@@ -1,6 +1,9 @@
 package com.lq.model;
 
 import com.lq.mapping.annotation.MapClass;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @MapClass("com.lq.entity.SysAcl")
@@ -8,11 +11,16 @@ public class SysAclModel{
 	
 	private Integer id;
 	private String code;
+	@NotBlank(message = "权限点不能为空")
 	private String name;
+	@NotNull(message = "必须指定对应的权限模块")
 	private Integer aclModuleId;
+
 	private String url;
+	@NotNull(message = "必须指定权限点的类型")
 	private Integer type;
 	private Integer status;
+	@NotNull(message = "必须指定权限点的展示顺序")
 	private Integer seq;
 	private String remark;
 	private String operator;

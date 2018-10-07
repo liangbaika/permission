@@ -27,6 +27,10 @@ public class LoginHolder {
         return userHolder.get();
     }
 
+    public static Integer getUserId() {
+        return userHolder.get().getId();
+    }
+
     public static HttpServletRequest getRequest() {
         return requestHolder.get();
     }

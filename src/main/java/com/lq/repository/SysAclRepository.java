@@ -24,4 +24,6 @@ public interface SysAclRepository {
     int selectCount(@Param("sysacl") SysAcl sysacl);
 
     List<com.lq.entity.SysAcl> selectPage(@Param("sysacl") SysAcl sysacl, @Param("pageable") Pageable pageable);
+
+    int checkExist(@org.apache.ibatis.annotations.Param("aclModuleId") Integer aclModuleId,@org.apache.ibatis.annotations.Param("name") String name);
 }

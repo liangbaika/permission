@@ -42,7 +42,6 @@ public class SysAclRestApiController {
 
 	@GetMapping(value = "/lq/sysAcl")
     public ResponseEnvelope<Page<SysAclModel>> listSysAcl(SysAclVO sysAclVO,Pageable pageable){
-
 		SysAclModel param = beanMapper.map(sysAclVO, SysAclModel.class);
         List<SysAclModel> sysAclModelModels = sysAclService.selectPage(param,pageable);
         long count=sysAclService.selectCount(param);

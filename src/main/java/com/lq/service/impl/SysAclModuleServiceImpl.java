@@ -34,11 +34,6 @@ public class SysAclModuleServiceImpl implements SysAclModuleService {
     @Autowired
     private SysAclModuleRepository sysAclModuleRepo;
 
-    @Transactional
-    @Override
-    public int create(SysAclModuleModel sysAclModuleModel) {
-        return sysAclModuleRepo.insert(beanMapper.map(sysAclModuleModel, SysAclModule.class));
-    }
 
     private Comparator<SysAclModule> comparator = new Comparator<SysAclModule>() {
         @Override
@@ -46,6 +41,14 @@ public class SysAclModuleServiceImpl implements SysAclModuleService {
             return o1.getSeq() - o2.getSeq();
         }
     };
+
+
+    @Transactional
+    @Override
+    public int create(SysAclModuleModel sysAclModuleModel) {
+        return sysAclModuleRepo.insertSelective(beanMapper.map(sysAclModuleModel, SysAclModule.class));
+    }
+
 
     @Transactional
     @Override
@@ -115,11 +118,18 @@ public class SysAclModuleServiceImpl implements SysAclModuleService {
         if (before == null) {
             throw new PermissionException(ErrorCode.SYSACL_MODULE_NOTEXIST.getMsg());
         }
+        //to  check  this  sysaclmodule  have more  relation datas
+        SysAclModuleModel param1 = new SysAclModuleModel();
+        param1.setParentId(id);
+        List<SysAclModule> sysAclModules = sysAclModuleRepo.selectPage(beanMapper.map(param1, SysAclModule.class), null);
+        if (!CollectionUtils.isEmpty(sysAclModules)) {
+            throw new PermissionException(ErrorCode.ACLMODULE_RELATION_ERROR.getMsg());
+        }
         // 1
-        SysAclModuleModel sysAclModuleModel = new SysAclModuleModel();
-        sysAclModuleModel.setId(id);
-        sysAclModuleModel.setStatus(DataUseful.NOUSEFUL.getCode());
-        return updateByPrimaryKeySelective(sysAclModuleModel);
+        SysAclModuleModel param2 = new SysAclModuleModel();
+        param2.setId(id);
+        param2.setStatus(DataUseful.NOUSEFUL.getCode());
+        return updateByPrimaryKeySelective(param2);
         // 2  return sysAclModuleRepo.deleteByPrimaryKey(id);
     }
 
@@ -172,6 +182,12 @@ public class SysAclModuleServiceImpl implements SysAclModuleService {
         return rootAclModules;
     }
 
+    /**
+     * 递归构造权限模块树
+     *
+     * @param parentNode    父节点
+     * @param allAclModules 剩余需构造的节点集
+     */
     private void constructTree(SysAclModule parentNode, List<SysAclModule> allAclModules) {
         Iterator<SysAclModule> iterator = allAclModules.iterator();
         List<SysAclModule> childrens = new LinkedList<>();
