@@ -271,4 +271,22 @@
      SELECT  count(s.id) from  sys_acl s
      where s.name=#{name} and s.status=1 and s.acl_module_id=#{aclModuleId}
   </select>
+
+    <select id="getAll" resultType="com.lq.model.SysAclModel">
+        SELECT * from sys_acl
+    </select>
+
+    <select id="getByIdList" resultType="com.lq.model.SysAclModel">
+        SELECT * from sys_acl
+        where
+        1=1
+        <if test="ids !=null and ids.size>0">
+            and id in
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+
+
+    </select>
 </mapper>

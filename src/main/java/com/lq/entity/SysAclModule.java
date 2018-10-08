@@ -1,5 +1,7 @@
 package com.lq.entity;
 
+import com.lq.model.SysAclModel;
+
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +27,16 @@ public class SysAclModule {
     private String operateIp;
 
     private List<SysAclModule> nodes;
+
+    private List<SysAclModel> aclList;
+
+    public List<SysAclModel> getAclList() {
+        return aclList;
+    }
+
+    public void setAclList(List<SysAclModel> aclList) {
+        this.aclList = aclList;
+    }
 
     public List<SysAclModule> getNodes() {
         return nodes;

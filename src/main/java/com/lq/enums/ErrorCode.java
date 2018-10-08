@@ -25,6 +25,8 @@ public enum ErrorCode {
     ACLMODULE_RELATION_ERROR(10012, "该权限模块下已有数据 删除失败"),
     ACL_CREATE_ERROR(10013, "该权限模块下已存在此权限点 创建失败"),
     SYSACL_NOTEXIST(10014, "该权限点不存在"),
+    ROLE_NAME_EXIST(10015,"该角色名已存在"),
+    ROLE_NOT_EXIST(10016,"该角色不存在"),
     ;
 
     private Integer code;

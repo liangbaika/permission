@@ -5,7 +5,7 @@
 <configuration>
     <settings>
         <setting name="useGeneratedKeys" value="true"/>
-        <!--驼峰?-->
+        <!--驼峰-->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 

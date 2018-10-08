@@ -23,4 +23,10 @@ public interface SysRoleAclRepository {
     int selectCount(@Param("sysroleacl") SysRoleAcl sysroleacl);
 
     List<com.lq.entity.SysRoleAcl> selectPage(@Param("sysroleacl") SysRoleAcl sysroleacl, @Param("pageable") Pageable pageable);
+
+    List<Integer> getAclIdListByRoleIdList(@org.apache.ibatis.annotations.Param("roleIdList") List<Integer> userRoleIdList);
+
+    void deleteByRoleId(@org.apache.ibatis.annotations.Param("roleId") int roleId);
+
+    int  batchInsert(@org.apache.ibatis.annotations.Param("roleAclList") List<SysRoleAcl> roleAclList);
 }

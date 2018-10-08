@@ -23,4 +23,6 @@ public interface SysRoleUserRepository {
     int selectCount(@Param("sysroleuser") SysRoleUser sysroleuser);
 
     List<com.lq.entity.SysRoleUser> selectPage(@Param("sysroleuser") SysRoleUser sysroleuser, @Param("pageable") Pageable pageable);
+
+    List<Integer> getRoleIDListByUserId(@org.apache.ibatis.annotations.Param("userId") int userId);
 }
