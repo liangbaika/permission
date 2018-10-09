@@ -3,6 +3,8 @@ package com.lq.service;
 
 import com.lq.model.SysRoleUserModel;
 import java.util.Date;
+
+import com.lq.model.SysUserModel;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 
@@ -24,4 +26,7 @@ public long selectCount(SysRoleUserModel sysRoleUserModel);
 
 public List<SysRoleUserModel> selectPage(SysRoleUserModel sysRoleUserModel, Pageable pageable);
 
+    List<SysUserModel> getUsersByRoleId(int roleId);
+
+    int update(int roleId, List<Integer> userIdList);
 }

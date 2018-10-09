@@ -251,4 +251,13 @@
             limit ${param2.offset}, ${param2.pageSize}
         </if>
     </select>
+
+    <select id="getUsersByIds" resultType="com.lq.model.SysUserModel">
+        SELECT * from sys_user
+        where id in
+        <foreach collection="userIds" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+
+    </select>
 </mapper>

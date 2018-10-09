@@ -1,12 +1,14 @@
 package com.lq.service.impl;
 
 import com.google.common.collect.Lists;
+import com.lq.entity.SysAcl;
 import com.lq.enums.DataUseful;
 import com.lq.enums.ErrorCode;
 import com.lq.exception.ParamException;
 import com.lq.exception.PermissionException;
 import com.lq.mapping.BeanMapper;
 import com.lq.model.SysDeptModel;
+import com.lq.repository.SysAclRepository;
 import com.lq.utils.Const;
 import com.lq.utils.LoginHolder;
 import com.lq.utils.ParamValidator;
@@ -34,6 +36,8 @@ public class SysAclModuleServiceImpl implements SysAclModuleService {
     @Autowired
     private SysAclModuleRepository sysAclModuleRepo;
 
+    @Autowired
+    private SysAclRepository aclRepository;
 
     private Comparator<SysAclModule> comparator = new Comparator<SysAclModule>() {
         @Override
@@ -123,6 +127,12 @@ public class SysAclModuleServiceImpl implements SysAclModuleService {
         param1.setParentId(id);
         List<SysAclModule> sysAclModules = sysAclModuleRepo.selectPage(beanMapper.map(param1, SysAclModule.class), null);
         if (!CollectionUtils.isEmpty(sysAclModules)) {
+            throw new PermissionException(ErrorCode.ACLMODULE_RELATION_ERROR.getMsg());
+        }
+        SysAcl param3 = new SysAcl();
+        param3.setAclModuleId(id);
+        int num=aclRepository.selectCount(param3);
+        if(num>0){
             throw new PermissionException(ErrorCode.ACLMODULE_RELATION_ERROR.getMsg());
         }
         // 1

@@ -1,6 +1,10 @@
 package com.lq.controller;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.lq.enums.DataUseful;
 import com.lq.mapping.BeanMapper;
+import com.lq.service.SysRoleUserService;
 import com.lq.utils.LoginHolder;
 import com.lq.vo.ResponseEnvelope;
 import org.slf4j.Logger;
@@ -20,6 +24,7 @@ import com.lq.model.SysUserModel;
 import com.lq.vo.SysUserVO;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/permission")
@@ -32,6 +37,10 @@ public class SysUserRestApiController {
 
     @Autowired
     private SysUserService sysUserService;
+
+
+    @Autowired
+    private SysRoleUserService sysRoleUserService;
 
     @GetMapping(value = "/lq/sysUser/{id}/json")
     public ResponseEnvelope<SysUserVO> getSysUserById(@PathVariable Integer id) {
@@ -76,6 +85,7 @@ public class SysUserRestApiController {
         ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<>(result, true);
         return responseEnv;
     }
+
     @DeleteMapping(value = "/lq/sysUser/{id}")
     public ResponseEnvelope<Integer> deleteSysUserByPrimaryKey(@PathVariable Integer id) {
         Integer result = sysUserService.deleteByPrimaryKey(id);
@@ -93,5 +103,35 @@ public class SysUserRestApiController {
         ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<Integer>(result, true);
         return responseEnv;
     }
+
+    /**
+     * 根据角色id获取角色下已有用户 和未选用户列表
+     *
+     * @param roleId
+     * @return
+     */
+    @GetMapping("/users")
+    public ResponseEnvelope getUsersByRoleId(@RequestParam("roleId") int roleId) {
+        Map<String, List<SysUserModel>> map = getUsersOfSelectedAndUnSelectedByRoleId(roleId);
+        return new ResponseEnvelope(map, true);
+    }
+
+    private Map<String, List<SysUserModel>> getUsersOfSelectedAndUnSelectedByRoleId(int roleId) {
+        List<SysUserModel> selectedUserModels = sysRoleUserService.getUsersByRoleId(roleId);
+        SysUserModel param = new SysUserModel();
+        param.setStatus(DataUseful.USEFUL.getCode());
+        List<SysUserModel> allUserModels = sysUserService.selectPage(param, null);
+        Map<String, List<SysUserModel>> map = Maps.newHashMap();
+        List<SysUserModel> unSelectedUserModels = Lists.newArrayList();
+        for (SysUserModel userModel : allUserModels) {
+            if (selectedUserModels.contains(userModel)) {
+                unSelectedUserModels.add(userModel);
+            }
+        }
+        map.put("selected", selectedUserModels);
+        map.put("unselected", unSelectedUserModels);
+        return map;
+    }
+
 
 }

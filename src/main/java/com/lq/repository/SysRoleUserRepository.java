@@ -25,4 +25,8 @@ public interface SysRoleUserRepository {
     List<com.lq.entity.SysRoleUser> selectPage(@Param("sysroleuser") SysRoleUser sysroleuser, @Param("pageable") Pageable pageable);
 
     List<Integer> getRoleIDListByUserId(@org.apache.ibatis.annotations.Param("userId") int userId);
+
+    void deleteByRoleId(@org.apache.ibatis.annotations.Param("roleId") int roleId);
+
+    int batchInsert(@org.apache.ibatis.annotations.Param("roleUserList") List<SysRoleUser> roleUserList);
 }

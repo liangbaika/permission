@@ -1,6 +1,7 @@
 package com.lq.controller;
 
 import com.lq.mapping.BeanMapper;
+import com.lq.utils.StringUtils;
 import com.lq.vo.ResponseEnvelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,5 +76,13 @@ public class SysRoleUserRestApiController {
         ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<Integer>(result, true);
         return responseEnv;
     }
+    @PutMapping("/changeUsers")
+    public ResponseEnvelope changeAcls(@RequestParam("roleId") int roleId,
+                                       @RequestParam(value = "userIds", required = false, defaultValue = "") String userIds) {
+        List<Integer> userIdList = StringUtils.split2ListInt(userIds);
+        int res = sysRoleUserService.update(roleId, userIdList);
+        return res > 0 ? new ResponseEnvelope(true) : new ResponseEnvelope(false);
+    }
+
 
 }

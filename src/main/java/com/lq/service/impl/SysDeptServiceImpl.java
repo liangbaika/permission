@@ -2,13 +2,16 @@ package com.lq.service.impl;
 
 import com.google.common.collect.Lists;
 import com.lq.entity.SysDept;
+import com.lq.entity.SysUser;
 import com.lq.enums.ErrorCode;
 import com.lq.exception.ParamException;
 import com.lq.exception.PermissionException;
 import com.lq.mapping.BeanMapper;
 import com.lq.model.SysDeptModel;
 import com.lq.repository.SysDeptRepository;
+import com.lq.repository.SysUserRepository;
 import com.lq.service.SysDeptService;
+import com.lq.service.SysUserService;
 import com.lq.utils.Const;
 import com.lq.utils.LoginHolder;
 import com.lq.utils.ParamValidator;
@@ -30,7 +33,8 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     @Autowired
     private SysDeptRepository sysDeptRepo;
-
+    @Autowired
+    private SysUserRepository sysUserRepository;
     private Comparator<SysDeptModel> comparator = new Comparator<SysDeptModel>() {
         @Override
         public int compare(SysDeptModel s1, SysDeptModel s2) {
@@ -92,8 +96,17 @@ public class SysDeptServiceImpl implements SysDeptService {
         if (!CollectionUtils.isEmpty(sysDepts)) {
             throw new PermissionException(ErrorCode.DELETE_RELATION_ERROR.getMsg());
         }
+        //部门下是否已有用户存在
+        SysUser param = new SysUser();
+        param.setDeptId(id);
+        int num = sysUserRepository.selectCount(param);
+        if(num>0){
+            throw new PermissionException(ErrorCode.DELETE_RELATION_ERROR.getMsg());
+        }
         return sysDeptRepo.deleteByPrimaryKey(id);
     }
+
+
 
     @Transactional(readOnly = true)
     @Override

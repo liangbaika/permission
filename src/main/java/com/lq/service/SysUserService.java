@@ -3,6 +3,8 @@ package com.lq.service;
 
 import com.lq.model.SysUserModel;
 import java.util.Date;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 
@@ -28,4 +30,5 @@ public List<SysUserModel> selectPage(SysUserModel sysUserModel, Pageable pageabl
 
     Integer logout();
 
+    List<SysUserModel> getUsersByIds(@Param("userIds") List<Integer> userIds);
 }

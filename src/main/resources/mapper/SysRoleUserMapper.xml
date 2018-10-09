@@ -148,13 +148,13 @@
         <if test="param1.operateIp != null">
             and operate_ip = #{param1.operateIp,jdbcType=VARCHAR}
         </if>
-        <if test="param2.sort != null">
+        <if test="param2 !=null and  param2.sort != null">
             order by
             <foreach collection="param2.sort" item="order" separator=",">
                 ${order.property} ${order.direction}
             </foreach>
         </if>
-        <if test="param2.offset >= 0 and param2.pageSize > 0">
+        <if test=" param2 !=null and param2.offset >= 0 and param2.pageSize > 0">
             limit ${param2.offset}, ${param2.pageSize}
         </if>
     </select>
@@ -164,4 +164,22 @@
     where user_id=#{userId}
 
   </select>
+
+    <delete id="deleteByRoleId">
+        DELETE  from sys_role_user
+        where role_id=#{roleId}
+    </delete>
+
+    <insert id="batchInsert" parameterType="map">
+        insert into sys_role_user ( role_id, user_id,
+        operator, operate_time, operate_ip
+        )
+        values
+        <foreach collection="roleUserList" separator="," item="roleUser">
+            (#{roleUser.roleId,jdbcType=INTEGER}, #{roleUser.userId,jdbcType=INTEGER},
+            #{roleUser.operator,jdbcType=VARCHAR}, #{roleUser.operateTime,jdbcType=TIMESTAMP},
+            #{roleUser.operateIp,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
 </mapper>
