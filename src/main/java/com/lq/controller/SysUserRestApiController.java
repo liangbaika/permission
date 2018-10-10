@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.lq.enums.DataUseful;
 import com.lq.mapping.BeanMapper;
+import com.lq.service.SysAclService;
+import com.lq.service.SysRoleService;
 import com.lq.service.SysRoleUserService;
 import com.lq.utils.LoginHolder;
 import com.lq.vo.ResponseEnvelope;
@@ -23,6 +25,7 @@ import com.lq.service.SysUserService;
 import com.lq.model.SysUserModel;
 import com.lq.vo.SysUserVO;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -133,5 +136,15 @@ public class SysUserRestApiController {
         return map;
     }
 
+    @Autowired
+    private SysRoleService sysRoleService;
+
+    @GetMapping("/acls")
+    public ResponseEnvelope acls(@RequestParam("userId") Integer userId) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("aclsModulesTree", sysRoleService.userAclTree(userId));
+        map.put("roles", sysRoleService.getRoleListByUserId(userId));
+        return new ResponseEnvelope(map, true);
+    }
 
 }

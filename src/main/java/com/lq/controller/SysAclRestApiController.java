@@ -1,6 +1,9 @@
 package com.lq.controller;
 
+import com.google.common.collect.Maps;
 import com.lq.mapping.BeanMapper;
+import com.lq.model.SysRoleModel;
+import com.lq.service.SysRoleService;
 import com.lq.vo.ResponseEnvelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,61 +22,74 @@ import com.lq.model.SysAclModel;
 import com.lq.vo.SysAclVO;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/permission")
 public class SysAclRestApiController {
 
-	private final Logger logger = LoggerFactory.getLogger(SysAclRestApiController.class);
+    private final Logger logger = LoggerFactory.getLogger(SysAclRestApiController.class);
 
-	@Autowired
-	private BeanMapper beanMapper;
+    @Autowired
+    private BeanMapper beanMapper;
 
-	@Autowired
-	private SysAclService sysAclService;
+    @Autowired
+    private SysAclService sysAclService;
 
-	@GetMapping(value = "/lq/sysAcl/{id}")
-	public ResponseEnvelope<SysAclVO> getSysAclById(@PathVariable Integer id){
-		SysAclModel sysAclModel = sysAclService.findByPrimaryKey(id);
-		SysAclVO sysAclVO =beanMapper.map(sysAclModel, SysAclVO.class);
-		ResponseEnvelope<SysAclVO> responseEnv = new ResponseEnvelope<>(sysAclVO,true);
-		return responseEnv;
-	}
-
-	@GetMapping(value = "/lq/sysAcl")
-    public ResponseEnvelope<Page<SysAclModel>> listSysAcl(SysAclVO sysAclVO,Pageable pageable){
-		SysAclModel param = beanMapper.map(sysAclVO, SysAclModel.class);
-        List<SysAclModel> sysAclModelModels = sysAclService.selectPage(param,pageable);
-        long count=sysAclService.selectCount(param);
-        Page<SysAclModel> page = new PageImpl<>(sysAclModelModels,pageable,count);
-        ResponseEnvelope<Page<SysAclModel>> responseEnv = new ResponseEnvelope<>(page,true);
+    @GetMapping(value = "/lq/sysAcl/{id}")
+    public ResponseEnvelope<SysAclVO> getSysAclById(@PathVariable Integer id) {
+        SysAclModel sysAclModel = sysAclService.findByPrimaryKey(id);
+        SysAclVO sysAclVO = beanMapper.map(sysAclModel, SysAclVO.class);
+        ResponseEnvelope<SysAclVO> responseEnv = new ResponseEnvelope<>(sysAclVO, true);
         return responseEnv;
     }
 
-	@PostMapping(value = "/lq/sysAcl")
-	public ResponseEnvelope<Integer> createSysAcl(@RequestBody SysAclVO sysAclVO){
-		SysAclModel sysAclModel = beanMapper.map(sysAclVO, SysAclModel.class);
-		Integer  result = sysAclService.create(sysAclModel);
-		ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<>(result,true);
+    @GetMapping(value = "/lq/sysAcl")
+    public ResponseEnvelope<Page<SysAclModel>> listSysAcl(SysAclVO sysAclVO, Pageable pageable) {
+        SysAclModel param = beanMapper.map(sysAclVO, SysAclModel.class);
+        List<SysAclModel> sysAclModelModels = sysAclService.selectPage(param, pageable);
+        long count = sysAclService.selectCount(param);
+        Page<SysAclModel> page = new PageImpl<>(sysAclModelModels, pageable, count);
+        ResponseEnvelope<Page<SysAclModel>> responseEnv = new ResponseEnvelope<>(page, true);
         return responseEnv;
-	}
+    }
+
+    @PostMapping(value = "/lq/sysAcl")
+    public ResponseEnvelope<Integer> createSysAcl(@RequestBody SysAclVO sysAclVO) {
+        SysAclModel sysAclModel = beanMapper.map(sysAclVO, SysAclModel.class);
+        Integer result = sysAclService.create(sysAclModel);
+        ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<>(result, true);
+        return responseEnv;
+    }
 
     @DeleteMapping(value = "/lq/sysAcl/{id}")
-	public ResponseEnvelope<Integer> deleteSysAclByPrimaryKey(@PathVariable Integer id){
-		Integer  result = sysAclService.deleteByPrimaryKey(id);
-		ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<>(result,true);
+    public ResponseEnvelope<Integer> deleteSysAclByPrimaryKey(@PathVariable Integer id) {
+        Integer result = sysAclService.deleteByPrimaryKey(id);
+        ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<>(result, true);
         return responseEnv;
-	}
+    }
 
 
     @PutMapping(value = "/lq/sysAcl/{id}")
-	public ResponseEnvelope<Integer> updateSysAclByPrimaryKeySelective(@PathVariable Integer id,
-					@RequestBody SysAclVO sysAclVO){
-		SysAclModel sysAclModel = beanMapper.map(sysAclVO, SysAclModel.class);
-		sysAclModel.setId(id);
-		Integer  result = sysAclService.updateByPrimaryKeySelective(sysAclModel);
-		ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<Integer>(result,true);
+    public ResponseEnvelope<Integer> updateSysAclByPrimaryKeySelective(@PathVariable Integer id,
+                                                                       @RequestBody SysAclVO sysAclVO) {
+        SysAclModel sysAclModel = beanMapper.map(sysAclVO, SysAclModel.class);
+        sysAclModel.setId(id);
+        Integer result = sysAclService.updateByPrimaryKeySelective(sysAclModel);
+        ResponseEnvelope<Integer> responseEnv = new ResponseEnvelope<Integer>(result, true);
         return responseEnv;
-	}
+    }
+
+    @Autowired
+    private SysRoleService sysRoleService;
+
+    @GetMapping("/acls")
+    public ResponseEnvelope acls(@RequestParam("aclId") Integer aclId) {
+        Map<String, Object> map = Maps.newHashMap();
+        List<SysRoleModel> roles = sysRoleService.getRoleListByAclId(aclId);
+        map.put("roles", roles);
+        map.put("users", sysRoleService.getUserListByRoleList(roles));
+        return new ResponseEnvelope(map, true);
+    }
 
 }

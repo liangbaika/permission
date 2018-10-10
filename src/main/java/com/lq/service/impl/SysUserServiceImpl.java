@@ -150,6 +150,11 @@ public class SysUserServiceImpl implements SysUserService {
         return DataUseful.USEFUL.getCode();
     }
 
+    @Override
+    public List<SysUserModel> getUsersByIds(List<Integer> userIds) {
+        return sysUserRepo.getByIdList(userIds);
+    }
+
     @Transactional
     @Override
     public int updateByPrimaryKey(SysUserModel sysUserModel) {

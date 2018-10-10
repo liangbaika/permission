@@ -252,12 +252,13 @@
         </if>
     </select>
 
-    <select id="getUsersByIds" resultType="com.lq.model.SysUserModel">
+    <select id="getByIdList" resultType="com.lq.model.SysUserModel">
         SELECT * from sys_user
         where id in
-        <foreach collection="userIds" item="id" separator="," open="(" close=")">
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
 
     </select>
+
 </mapper>

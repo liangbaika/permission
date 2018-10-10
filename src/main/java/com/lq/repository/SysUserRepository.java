@@ -1,6 +1,7 @@
 package com.lq.repository;
 
 import com.lq.entity.SysUser;
+
 import java.util.List;
 
 import com.lq.model.SysUserModel;
@@ -27,4 +28,6 @@ public interface SysUserRepository {
     List<com.lq.entity.SysUser> selectPage(@Param("sysuser") SysUser sysuser, @Param("pageable") Pageable pageable);
 
     SysUserModel selectUserByKeyWord(@org.apache.ibatis.annotations.Param("keyWord") String keyWord);
+
+    List<SysUserModel> getByIdList(@org.apache.ibatis.annotations.Param("ids") List<Integer> userIdList);
 }

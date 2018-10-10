@@ -2,6 +2,8 @@ package com.lq.repository;
 
 import com.lq.entity.SysRole;
 import java.util.List;
+
+import com.lq.model.SysRoleModel;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -23,4 +25,6 @@ public interface SysRoleRepository {
     int selectCount(@Param("sysrole") SysRole sysrole);
 
     List<com.lq.entity.SysRole> selectPage(@Param("sysrole") SysRole sysrole, @Param("pageable") Pageable pageable);
+
+    List<SysRoleModel> getRoleByIdList(@org.apache.ibatis.annotations.Param("idList") List<Integer> idList);
 }

@@ -11,7 +11,8 @@ import com.lq.exception.PermissionException;
 import com.lq.mapping.BeanMapper;
 import com.lq.model.SysAclModel;
 import com.lq.model.SysAclModuleModel;
-import com.lq.repository.SysAclRepository;
+import com.lq.model.SysUserModel;
+import com.lq.repository.*;
 import com.lq.service.SysAclModuleService;
 import com.lq.utils.LoginHolder;
 import com.lq.utils.ParamValidator;
@@ -21,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 
 import com.lq.entity.SysRole;
-import com.lq.repository.SysRoleRepository;
 import com.lq.model.SysRoleModel;
 import com.lq.service.SysRoleService;
 import org.springframework.util.CollectionUtils;
@@ -36,6 +36,12 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Autowired
     private BeanMapper beanMapper;
+
+    @Autowired
+    private SysRoleAclRepository sysRoleAclRepository;
+
+    @Autowired
+    private SysRoleUserRepository sysRoleUserRepository;
 
     @Autowired
     private SysRoleRepository sysRoleRepo;
@@ -134,6 +140,20 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Autowired
     private SysAclModuleService sysAclModuleService;
 
+
+    public List<SysAclModuleModel> userAclTree(int userId) {
+        List<SysAclModel> userAclList = sysCoreService.getUserAclList(userId);
+        List<SysAclModel> sysAclModels = Lists.newArrayList();
+        for (SysAclModel s : userAclList) {
+            SysAclModel sysAclModel = new SysAclModel();
+            beanMapper.map(s, sysAclModel);
+            sysAclModel.setHasAcl(true);
+            sysAclModel.setChecked(true);
+            sysAclModels.add(sysAclModel);
+        }
+        return toTree(sysAclModels);
+    }
+
     public List<SysAclModuleModel> roleTree(int roleId) {
         //1 当前用户已分配的权限点
         List<SysAclModel> currentUserAclList = sysCoreService.getCurrentUserAclList();
@@ -146,6 +166,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         List<SysAclModel> sysAclModels = Lists.newArrayList();
         for (SysAclModel acl : allAclId) {
             SysAclModel sysAclModel = new SysAclModel();
+            beanMapper.map(acl, sysAclModel);
             if (userAclSet.contains(acl.getId())) {
                 sysAclModel.setHasAcl(true);
             }
@@ -188,4 +209,35 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
 
+    public List<SysRoleModel> getRoleListByUserId(int userId) {
+        List<Integer> roleIDListByUserId = sysRoleUserRepository.getRoleIDListByUserId(userId);
+        if (CollectionUtils.isEmpty(roleIDListByUserId)) {
+            return Lists.newArrayList();
+        }
+        return sysRoleRepo.getRoleByIdList(roleIDListByUserId);
+    }
+
+
+    public List<SysRoleModel> getRoleListByAclId(int aclId) {
+        List<Integer> roleIdList = sysRoleAclRepository.getRoleIdListByAclId(aclId);
+        if (CollectionUtils.isEmpty(roleIdList)) {
+            return Lists.newArrayList();
+        }
+        return sysRoleRepo.getRoleByIdList(roleIdList);
+    }
+
+    public List<SysUserModel> getUserListByRoleList(List<SysRoleModel> roleList) {
+        if (CollectionUtils.isEmpty(roleList)) {
+            return Lists.newArrayList();
+        }
+        List<Integer> roleIdList = roleList.stream().map(r -> r.getId()).collect(Collectors.toList());
+        List<Integer> userIdList = sysRoleUserRepository.getUserIdListByRoleIdList(roleIdList);
+        if (CollectionUtils.isEmpty(userIdList)) {
+            return Lists.newArrayList();
+        }
+        return sysUserRepository.getByIdList(userIdList);
+    }
+
+    @Autowired
+    private SysUserRepository sysUserRepository;
 }

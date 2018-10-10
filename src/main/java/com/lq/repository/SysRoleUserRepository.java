@@ -1,7 +1,10 @@
 package com.lq.repository;
 
 import com.lq.entity.SysRoleUser;
+
 import java.util.List;
+
+import com.lq.model.SysRoleModel;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -29,4 +32,6 @@ public interface SysRoleUserRepository {
     void deleteByRoleId(@org.apache.ibatis.annotations.Param("roleId") int roleId);
 
     int batchInsert(@org.apache.ibatis.annotations.Param("roleUserList") List<SysRoleUser> roleUserList);
+
+    List<Integer> getUserIdListByRoleIdList(@org.apache.ibatis.annotations.Param("roleIdList") List<Integer> roleIdList);
 }

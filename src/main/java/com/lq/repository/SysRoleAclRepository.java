@@ -1,7 +1,9 @@
 package com.lq.repository;
 
 import com.lq.entity.SysRoleAcl;
+
 import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -28,5 +30,7 @@ public interface SysRoleAclRepository {
 
     void deleteByRoleId(@org.apache.ibatis.annotations.Param("roleId") int roleId);
 
-    int  batchInsert(@org.apache.ibatis.annotations.Param("roleAclList") List<SysRoleAcl> roleAclList);
+    int batchInsert(@org.apache.ibatis.annotations.Param("roleAclList") List<SysRoleAcl> roleAclList);
+
+    List<Integer> getRoleIdListByAclId(@org.apache.ibatis.annotations.Param("aclId") int aclId);
 }

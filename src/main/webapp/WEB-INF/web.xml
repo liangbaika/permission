@@ -49,6 +49,24 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>AclControlFilter</filter-name>
+        <filter-class>com.lq.interceptor.AclControlFilter</filter-class>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>includeUrls</param-name>
+            <param-value>/login</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>AclControlFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+
+    </filter-mapping>
+
     <servlet>
         <servlet-name>StatViewServlet</servlet-name>
         <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>

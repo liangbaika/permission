@@ -187,4 +187,8 @@
         </foreach>
     </insert>
 
+    <select id="getRoleIdListByAclId" resultType="java.lang.Integer">
+        SELECT  role_id  from sys_role_acl
+        where acl_id=#{aclId}
+    </select>
 </mapper>
