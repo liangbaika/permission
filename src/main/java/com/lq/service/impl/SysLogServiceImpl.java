@@ -3,6 +3,7 @@ package com.lq.service.impl;
 import com.lq.entity.SysLogWithBLOBs;
 import com.lq.mapping.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import com.lq.service.SysLogService;
 import java.util.List;
 
 @Service
+@EnableAsync
 public class SysLogServiceImpl implements SysLogService {
 
 	@Autowired
