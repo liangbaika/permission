@@ -3,20 +3,25 @@ package com.lq.service.impl;
 import com.google.common.collect.Lists;
 import com.lq.entity.SysAcl;
 import com.lq.entity.SysUser;
+import com.lq.enums.CahceKeyConst;
 import com.lq.enums.DataUseful;
 import com.lq.enums.RoleTypeEnum;
 import com.lq.model.SysAclModel;
 import com.lq.model.SysRoleModel;
+import com.lq.redis.SysCacheServiceOfRedis;
 import com.lq.repository.SysAclRepository;
 import com.lq.repository.SysRoleAclRepository;
 import com.lq.repository.SysRoleRepository;
 import com.lq.repository.SysRoleUserRepository;
 import com.lq.service.SysRoleUserService;
+import com.lq.utils.JsonMapper;
 import com.lq.utils.LoginHolder;
+import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +30,7 @@ import java.util.stream.Collectors;
 /**
  * @Auther: LQ
  * @Date: 2018/10/8 17:24
- * @Description:
+ * @Description:权限核心关系维护层
  */
 @Service
 public class SysCoreService {
@@ -41,9 +46,12 @@ public class SysCoreService {
     @Autowired
     private SysRoleAclRepository sysRoleAclRepository;
 
+    @Resource(name = "sysCacheServiceOfRedis")
+    private SysCacheServiceOfRedis sysCacheServiceOfRedis;
+
     public List<SysAclModel> getCurrentUserAclList() {
         Integer userId = LoginHolder.getUserId();
-        return getUserAclList(userId);
+        return getUserAclListFromCache(userId);
     }
 
     public List<SysAclModel> getRoleAclList(int roleId) {
@@ -68,6 +76,21 @@ public class SysCoreService {
             return Lists.newArrayList();
         }
         return sysAclRepository.getByIdList(userAclIdList);
+    }
+
+
+    public List<SysAclModel> getUserAclListFromCache(int userId) {
+        String cacheValue = sysCacheServiceOfRedis.getFromCache(CahceKeyConst.USER_ACLS, String.valueOf(userId));
+        if (cacheValue == null) {
+            List<SysAclModel> userAclList = getUserAclList(userId);
+            //timeOutSeconds  可以自由配置 建议写在配置文件中, 1800：半小时
+            if (!CollectionUtils.isEmpty(userAclList)) {
+                sysCacheServiceOfRedis.saveCache(JsonMapper.obj2String(userAclList), 1800, CahceKeyConst.USER_ACLS, String.valueOf(userId));
+            }
+            return CollectionUtils.isEmpty(userAclList) ? Lists.newArrayList() : userAclList;
+        }
+        return JsonMapper.string2Obj(cacheValue, new TypeReference<List<SysAclModel>>() {
+        });
     }
 
 

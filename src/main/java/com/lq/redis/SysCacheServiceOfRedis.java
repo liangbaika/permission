@@ -9,13 +9,14 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.ShardedJedis;
 
 import javax.annotation.Resource;
+import javax.naming.Name;
 
 /**
  * @Auther: LQ
  * @Date: 2018/10/11 23:40
  * @Description: redis缓存
  */
-@Service
+@Service(value="sysCacheServiceOfRedis")
 @Slf4j
 public class SysCacheServiceOfRedis {
 
