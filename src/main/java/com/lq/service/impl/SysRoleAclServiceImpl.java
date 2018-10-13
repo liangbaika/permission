@@ -3,7 +3,9 @@ package com.lq.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.lq.enums.DataUseful;
+import com.lq.enums.LogType;
 import com.lq.mapping.BeanMapper;
+import com.lq.service.SysLogService;
 import com.lq.utils.LoginHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,9 @@ public class SysRoleAclServiceImpl implements SysRoleAclService {
 
     @Autowired
     private SysRoleAclRepository sysRoleAclRepo;
+
+    @Autowired
+    private SysLogService sysLogService;
 
     @Transactional
     @Override
@@ -80,6 +85,7 @@ public class SysRoleAclServiceImpl implements SysRoleAclService {
             }
         }
         int res = doUpdate(roleId, aclIdList);
+        sysLogService.createSelectiveByCustomerOfLog(originAclIdList, aclIdList, LogType.ROLE_ACL, roleId);
         return res;
     }
 

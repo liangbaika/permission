@@ -2,10 +2,11 @@ package com.lq.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.lq.entity.SysRoleAcl;
 import com.lq.enums.DataUseful;
+import com.lq.enums.LogType;
 import com.lq.mapping.BeanMapper;
 import com.lq.model.SysUserModel;
+import com.lq.service.SysLogService;
 import com.lq.service.SysUserService;
 import com.lq.utils.LoginHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
 
     @Autowired
     private SysRoleUserRepository sysRoleUserRepo;
+
+    @Autowired
+    private SysLogService sysLogService;
 
     @Transactional
     @Override
@@ -104,6 +108,7 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
             }
         }
         int res = doUpdate(roleId, userIdList);
+        sysLogService.createSelectiveByCustomerOfLog(originUserIds, userIdList, LogType.ROLE_USER, roleId);
         return res;
     }
 

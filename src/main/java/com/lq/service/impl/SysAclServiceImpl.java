@@ -3,8 +3,10 @@ package com.lq.service.impl;
 import com.google.common.base.Preconditions;
 import com.lq.enums.DataUseful;
 import com.lq.enums.ErrorCode;
+import com.lq.enums.LogType;
 import com.lq.exception.PermissionException;
 import com.lq.mapping.BeanMapper;
+import com.lq.service.SysLogService;
 import com.lq.utils.EncryptUtils;
 import com.lq.utils.LoginHolder;
 import com.lq.utils.ParamValidator;
@@ -30,6 +32,9 @@ public class SysAclServiceImpl implements SysAclService {
     @Autowired
     private SysAclRepository sysAclRepo;
 
+    @Autowired
+    private SysLogService sysLogService;
+
     @Transactional
     @Override
     public int create(SysAclModel sysAclModel) {
@@ -43,7 +48,10 @@ public class SysAclServiceImpl implements SysAclService {
         sysAclModel.setOperateTime(new Date());
         sysAclModel.setOperator(LoginHolder.getUser().getUsername());
         sysAclModel.setStatus(DataUseful.USEFUL.getCode());
-        return sysAclRepo.insertSelective(beanMapper.map(sysAclModel, SysAcl.class));
+        SysAcl after = beanMapper.map(sysAclModel, SysAcl.class);
+        int res = sysAclRepo.insertSelective(after);
+        sysLogService.createSelectiveByCustomerOfLog(null, after, LogType.ACL, after.getId());
+        return res;
     }
 
     private boolean checkExist(Integer aclModuleId, String name) {
@@ -98,12 +106,13 @@ public class SysAclServiceImpl implements SysAclService {
         ParamValidator.check(sysAclModel);
         SysAcl before = sysAclRepo.selectByPrimaryKey(sysAclModel.getId());
         Preconditions.checkNotNull(before, ErrorCode.SYSACL_NOTEXIST.getMsg());
-        if (!before.getName().equals(sysAclModel.getName()) &&checkExist(sysAclModel.getAclModuleId(), sysAclModel.getName()) ) {
+        if (!before.getName().equals(sysAclModel.getName()) && checkExist(sysAclModel.getAclModuleId(), sysAclModel.getName())) {
             throw new PermissionException(ErrorCode.ACL_CREATE_ERROR.getMsg());
         }
         sysAclModel.setOperateIp("127.0.0.1");
         sysAclModel.setOperateTime(new Date());
         sysAclModel.setOperator(LoginHolder.getUser().getUsername());
+        sysLogService.createSelectiveByCustomerOfLog(before, sysAclModel, LogType.ACL, before.getId());
         return sysAclRepo.updateByPrimaryKeySelective(beanMapper.map(sysAclModel, SysAcl.class));
     }
 

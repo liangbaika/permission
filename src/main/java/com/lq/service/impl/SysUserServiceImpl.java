@@ -2,8 +2,10 @@ package com.lq.service.impl;
 
 import com.lq.enums.DataUseful;
 import com.lq.enums.ErrorCode;
+import com.lq.enums.LogType;
 import com.lq.exception.ParamException;
 import com.lq.mapping.BeanMapper;
+import com.lq.service.SysLogService;
 import com.lq.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +39,10 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserRepository sysUserRepo;
 
+    @Autowired
+    private SysLogService sysLogService;
+
+
     @Transactional
     @Override
     public int create(SysUserModel sysUserModel) {
@@ -58,7 +64,10 @@ public class SysUserServiceImpl implements SysUserService {
         sysUserModel.setOperateIp("127.0.0.1");
         sysUserModel.setOperateTime(new Date());
         sysUserModel.setOperater(LoginHolder.getUser().getUsername());
-        return sysUserRepo.insertSelective(beanMapper.map(sysUserModel, SysUser.class));
+        SysUser after = beanMapper.map(sysUserModel, SysUser.class);
+        int res = sysUserRepo.insertSelective(after);
+        sysLogService.createSelectiveByCustomerOfLog(null, after, LogType.USER, after.getId());
+        return res;
     }
 
     private boolean checkPhoneExist(String telephone) {
@@ -183,7 +192,10 @@ public class SysUserServiceImpl implements SysUserService {
             sysUserModel.setPassword(passwd);
         }
         sysUserModel.setOperateTime(new Date());
-        return sysUserRepo.updateByPrimaryKeySelective(beanMapper.map(sysUserModel, SysUser.class));
+        SysUser after = beanMapper.map(sysUserModel, SysUser.class);
+        int res = sysUserRepo.updateByPrimaryKeySelective(after);
+        sysLogService.createSelectiveByCustomerOfLog(before, after, LogType.USER, before.getId());
+        return res;
     }
 
 }

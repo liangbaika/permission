@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.lq.entity.SysDept;
 import com.lq.entity.SysUser;
 import com.lq.enums.ErrorCode;
+import com.lq.enums.LogType;
 import com.lq.exception.ParamException;
 import com.lq.exception.PermissionException;
 import com.lq.mapping.BeanMapper;
@@ -11,6 +12,7 @@ import com.lq.model.SysDeptModel;
 import com.lq.repository.SysDeptRepository;
 import com.lq.repository.SysUserRepository;
 import com.lq.service.SysDeptService;
+import com.lq.service.SysLogService;
 import com.lq.service.SysUserService;
 import com.lq.utils.Const;
 import com.lq.utils.LoginHolder;
@@ -35,6 +37,9 @@ public class SysDeptServiceImpl implements SysDeptService {
     private SysDeptRepository sysDeptRepo;
     @Autowired
     private SysUserRepository sysUserRepository;
+    @Autowired
+    private SysLogService sysLogService;
+
     private Comparator<SysDeptModel> comparator = new Comparator<SysDeptModel>() {
         @Override
         public int compare(SysDeptModel s1, SysDeptModel s2) {
@@ -55,7 +60,12 @@ public class SysDeptServiceImpl implements SysDeptService {
                 .build();
         deptModel.setOperateIp("system");//TODO
         deptModel.setOperateIp("127.0.0.1");//TODO
-        return sysDeptRepo.insertSelective(beanMapper.map(deptModel, SysDept.class));
+        SysDept after = beanMapper.map(deptModel, SysDept.class);
+        int res = sysDeptRepo.insertSelective(after);
+        //save log by ansyc
+        sysLogService.createSelectiveByCustomerOfLog(null, after, LogType.DEPT, after.getId());
+
+        return res;
     }
 
     /**
@@ -100,12 +110,11 @@ public class SysDeptServiceImpl implements SysDeptService {
         SysUser param = new SysUser();
         param.setDeptId(id);
         int num = sysUserRepository.selectCount(param);
-        if(num>0){
+        if (num > 0) {
             throw new PermissionException(ErrorCode.DELETE_RELATION_ERROR.getMsg());
         }
         return sysDeptRepo.deleteByPrimaryKey(id);
     }
-
 
 
     @Transactional(readOnly = true)
@@ -207,12 +216,12 @@ public class SysDeptServiceImpl implements SysDeptService {
         sysDeptModel.setOperateIp("127.0.0.1");
         sysDeptModel.setOperator(LoginHolder.getUser().getUsername());
         sysDeptModel.setOperteTime(new Date());
-        //不可更改
-        sysDeptModel.setId(null);
-        sysDeptModel.setParentId(null);
         SysDept before = sysDeptRepo.selectByPrimaryKey(sysDeptModel.getId());
-        //TODO before 可以记录日志
-        return sysDeptRepo.updateByPrimaryKeySelective(beanMapper.map(sysDeptModel, SysDept.class));
+        SysDept after = beanMapper.map(sysDeptModel, SysDept.class);
+        int res = sysDeptRepo.updateByPrimaryKeySelective(after);
+        Class<SysDept> aClass = (Class<SysDept>) before.getClass();
+        sysLogService.createSelectiveByCustomerOfLog(before, after, LogType.DEPT, before.getId());
+        return res;
     }
 
 }

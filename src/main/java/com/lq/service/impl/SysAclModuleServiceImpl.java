@@ -4,11 +4,13 @@ import com.google.common.collect.Lists;
 import com.lq.entity.SysAcl;
 import com.lq.enums.DataUseful;
 import com.lq.enums.ErrorCode;
+import com.lq.enums.LogType;
 import com.lq.exception.ParamException;
 import com.lq.exception.PermissionException;
 import com.lq.mapping.BeanMapper;
 import com.lq.model.SysDeptModel;
 import com.lq.repository.SysAclRepository;
+import com.lq.service.SysLogService;
 import com.lq.utils.Const;
 import com.lq.utils.LoginHolder;
 import com.lq.utils.ParamValidator;
@@ -39,6 +41,9 @@ public class SysAclModuleServiceImpl implements SysAclModuleService {
     @Autowired
     private SysAclRepository aclRepository;
 
+    @Autowired
+    private SysLogService sysLogService;
+
     private Comparator<SysAclModule> comparator = new Comparator<SysAclModule>() {
         @Override
         public int compare(SysAclModule o1, SysAclModule o2) {
@@ -63,13 +68,13 @@ public class SysAclModuleServiceImpl implements SysAclModuleService {
         sysAclModuleModel.setOperator(LoginHolder.getUser().getUsername());
         sysAclModuleModel.setOperteTime(new Date());
         int res = sysAclModuleRepo.insertSelective(beanMapper.map(sysAclModuleModel, SysAclModule.class));
-
         //after insert db we can  get  id then update  the level
         SysAclModuleModel sysAclModuleModel2 = new SysAclModuleModel();
         sysAclModuleModel2.setId(sysAclModuleModel.getId());
         sysAclModuleModel2.setLevel(completeLevel(sysAclModuleModel.getParentId(), sysAclModuleModel.getId()));
         sysAclModuleModel2.setOperteTime(new Date());
         res = updateByPrimaryKeySelective(sysAclModuleModel2);
+        sysLogService.createSelectiveByCustomerOfLog(null, sysAclModuleModel2, LogType.ACLMODULE, sysAclModuleModel2.getId());
         return res;
     }
 
@@ -131,8 +136,8 @@ public class SysAclModuleServiceImpl implements SysAclModuleService {
         }
         SysAcl param3 = new SysAcl();
         param3.setAclModuleId(id);
-        int num=aclRepository.selectCount(param3);
-        if(num>0){
+        int num = aclRepository.selectCount(param3);
+        if (num > 0) {
             throw new PermissionException(ErrorCode.ACLMODULE_RELATION_ERROR.getMsg());
         }
         // 1
@@ -236,10 +241,7 @@ public class SysAclModuleServiceImpl implements SysAclModuleService {
         sysAclModuleModel.setOperateIp("127.0.0.1");
         sysAclModuleModel.setOperator(LoginHolder.getUser().getUsername());
         sysAclModuleModel.setOperteTime(new Date());
-        //these properties can not be modified
-        sysAclModuleModel.setId(null);
-        sysAclModuleModel.setParentId(null);
-        sysAclModuleModel.setLevel(null);
+        sysLogService.createSelectiveByCustomerOfLog(before, sysAclModuleModel, LogType.ACLMODULE, before.getId());
         return sysAclModuleRepo.updateByPrimaryKeySelective(beanMapper.map(sysAclModuleModel, SysAclModule.class));
     }
 
