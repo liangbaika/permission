@@ -15,7 +15,7 @@
     <mvc:interceptors>
         <bean class="com.lq.interceptor.HttpInteceptor"/>
     </mvc:interceptors>
-    <mvc:resources mapping="static/**" location="static/"/>
+    <!--<mvc:resources mapping="static/**" location="static/"/>-->
     <!-- <mvc:resources mapping="/js/**" location="WEB-INF/js/"/>
      <mvc:resources mapping="/css/**" location="WEB-INF/css/"/>
      <mvc:resources mapping="/font/**" location="WEB-INF/font/"/>
