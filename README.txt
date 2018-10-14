@@ -16,7 +16,8 @@
 1、数据库配置：/resources/settings.properties
 2、redis配置：/resources/redis.properties
 3、项目入口页：/signin.jsp
-4、登录使用测试用户名和密码：
+4  部署到tomcat等服务器时,路径内请不要包含项目名 错例:http://localhost:8080/permission 正确: http://localhost:8080/
+5、登录使用测试用户名和密码：
 username: admin@qq.com
 password: 12345678
 
