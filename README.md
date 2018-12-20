@@ -21,7 +21,7 @@
 username: admin@qq.com
 password: 12345678
 
-演示地址：http://www.liangbaikai.xin
+演示地址：http://www.lq0.top
 
 其他：
 1、如果暂时不想使用redis，如何移除
@@ -53,3 +53,7 @@ SysUserService.java里的save() 方法里需要移除 password = "12345678";
 7. 无论你是前端 后端还是运维 或者测试，有兴趣的小伙伴都可以email我：1144388620@qq.com 同QQ,欢迎来撩;
    由于本人技术能力有限，本项目还请各位大佬嘴下留情;
    真诚的感谢您的阅读;
+
+
+
+

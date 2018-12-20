@@ -4,19 +4,16 @@ import com.lq.entity.SysAclModule;
 import com.lq.factory.ResponseEnvelopFactory;
 import com.lq.mapping.BeanMapper;
 import com.lq.model.SysAclModuleModel;
-import com.lq.model.SysDeptModel;
 import com.lq.service.SysAclModuleService;
 import com.lq.vo.ResponseEnvelope;
 import com.lq.vo.SysAclModuleVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
