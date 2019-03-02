@@ -21,7 +21,7 @@
 username: admin@qq.com
 password: 12345678
 
-演示地址：http://www.lq0.top
+演示地址：http://120.79.92.101:8080
 
 其他：
 1、如果暂时不想使用redis，如何移除
