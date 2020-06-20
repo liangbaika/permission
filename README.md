@@ -21,8 +21,7 @@
 username: admin@qq.com
 password: 12345678
 
-演示地址：http://120.79.92.101:8080
-
+演示地址：http://120.79.92.101:8080  （过期）
 其他：
 1、如果暂时不想使用redis，如何移除
 1) applicationContext.xml里移除 <import resource="redis.xml" />
@@ -46,13 +45,7 @@ SysUserService.java里的save() 方法里需要移除 password = "12345678";
 
 4. 本项目细节还有待优化; 由于jsp已在实际开发中日渐落寞，而前后端分离的方式更是主流，因此，本项目已推出 restful版本，提供几乎所有的更丰富的接口API；
 
-5. 本项目预计会有后续版本(ps:工作有时有点忙，也还未毕业，最近估计准备毕业设计等，空闲时间有点少...)
-
-6  本人博客相关网址 https://blog.csdn.net/qq_38844040    github地址 https://github.com/1144388620lq
-
-7. 无论你是前端 后端还是运维 或者测试，有兴趣的小伙伴都可以email我：1144388620@qq.com 同QQ,欢迎来撩;
-   由于本人技术能力有限，本项目还请各位大佬嘴下留情;
-   真诚的感谢您的阅读;
+5  本人博客相关网址 https://blog.csdn.net/qq_38844040    github地址 https://github.com/liangbaika
 
 
 
